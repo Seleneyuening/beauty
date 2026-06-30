@@ -322,6 +322,11 @@ window.applyBeautyRefresh = function applyBeautyRefresh(){
   document.querySelector("footer .sign").textContent = "慢慢变漂亮，也是一种很温柔的自我照顾。";
 };
 
+
+const SUPABASE_URL = "https://jmfuujyeodhjhgxezqpv.supabase.co";
+const SUPABASE_KEY = "sb_publishable_zDXnDnWE665dD9kMmSqxOQ_U0Y_V5ib";
+const SUPABASE_PRODUCTS_ENDPOINT = SUPABASE_URL + "/rest/v1/beauty_products?active=eq.true&select=cat,sub,tier,brand,name,price,note,img&order=sort_order.asc,id.asc";
+
 /* ====== 产品数据：加 img 字段即可显示真实图片 ====== */
 const CATS = [
   {id:"skincare", zh:"护肤", en:"Skincare"},
@@ -701,7 +706,36 @@ ubt.addEventListener("click",()=>{
   render();
 });
 
-if (typeof applyBeautyRefresh === "function") { try { applyBeautyRefresh(); } catch(e) { console.error(e); } } buildChips(); stats(); render();
+
+async function loadProductsFromSupabase(){
+  try{
+    const res = await fetch(SUPABASE_PRODUCTS_ENDPOINT, {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+      },
+    });
+    if(!res.ok) throw new Error("Supabase products request failed: " + res.status);
+    const rows = await res.json();
+    if(!Array.isArray(rows) || !rows.length) return false;
+    PRODUCTS.splice(0, PRODUCTS.length, ...rows.map((p)=>({
+      cat:p.cat, sub:p.sub || "", tier:p.tier, brand:p.brand, name:p.name,
+      price:p.price || "", note:p.note || "", img:p.img || "",
+    })));
+    return true;
+  }catch(e){
+    console.warn("Using bundled beauty products fallback", e);
+    return false;
+  }
+}
+
+async function startBeautyPage(){
+  if (typeof applyBeautyRefresh === "function") { try { applyBeautyRefresh(); } catch(e) { console.error(e); } }
+  await loadProductsFromSupabase();
+  buildChips(); stats(); render();
+}
+
+startBeautyPage();
 </script>
 </body>
 </html>

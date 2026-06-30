@@ -81,6 +81,7 @@ async function saveBoughtToSupabase(items){
   }
 }`;
           if (html.includes(oldSave)) html = html.replace(oldSave, newSave);
+          else if (!html.includes('async function loadBoughtFromSupabase')) throw new Error('Could not find saveBought block');
 
           html = html.replace(
             `async function startBeautyPage(){

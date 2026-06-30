@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch page and generate Supabase seed SQL
+      - name: Patch page, seed Supabase, and generate SQL backup
         run: |
           node <<'NODE'
           const fs = require('fs');
@@ -40,6 +40,23 @@ jobs:
             active: true,
             added_date: /2026-06-30新增/.test(p.name || '') ? '2026-06-30' : null,
           }));
+
+          const SUPABASE_URL = 'https://jmfuujyeodhjhgxezqpv.supabase.co';
+          const SUPABASE_KEY = 'sb_publishable_zDXnDnWE665dD9kMmSqxOQ_U0Y_V5ib';
+
+          async function seedSupabase(){
+            const res = await fetch(SUPABASE_URL + '/rest/v1/beauty_products?on_conflict=brand,name', {
+              method: 'POST',
+              headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: 'Bearer ' + SUPABASE_KEY,
+                'Content-Type': 'application/json',
+                Prefer: 'resolution=merge-duplicates,return=minimal',
+              },
+              body: JSON.stringify(products),
+            });
+            if (!res.ok) throw new Error('Supabase seed failed ' + res.status + ': ' + await res.text());
+          }
 
           const esc = (v) => v == null ? 'null' : `'${String(v).replace(/'/g, "''")}'`;
           const rows = products.map(p => `(${esc(p.cat)},${esc(p.sub)},${esc(p.tier)},${esc(p.brand)},${esc(p.name)},${esc(p.price)},${esc(p.note)},${esc(p.img)},${p.sort_order},${p.active ? 'true' : 'false'},${esc(p.added_date)})`).join(',\n');
@@ -90,8 +107,10 @@ jobs:
             html = html.replace('if (typeof applyBeautyRefresh === "function") { try { applyBeautyRefresh(); } catch(e) { console.error(e); } } buildChips(); stats(); render();', 'startBeautyPage();');
           }
 
-          fs.writeFileSync(path, html);
-          console.log(`Prepared ${products.length} products for Supabase`);
+          seedSupabase().then(() => {
+            fs.writeFileSync(path, html);
+            console.log(`Seeded ${products.length} products and patched page`);
+          });
           NODE
       - name: Commit generated changes
         run: |

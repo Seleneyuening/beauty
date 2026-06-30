@@ -1,0 +1,34 @@
+name: Apply beauty refresh
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch index.html
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          path = Path('index.html')
+          s = path.read_text(encoding='utf-8')
+          before = s
+          s = s.replace('\n<script>\n/* ====== 产品数据：加 img 字段即可显示真实图片 ====== */', '\n<script src="beauty-refresh.js"></script>\n<script>\n/* ====== 产品数据：加 img 字段即可显示真实图片 ====== */', 1)
+          s = s.replace('buildChips(); stats(); render();', 'applyBeautyRefresh(); buildChips(); stats(); render();', 1)
+          if s == before:
+              raise SystemExit('index.html was not changed')
+          path.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Load beauty refresh products and styling"
+          git push

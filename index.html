@@ -242,92 +242,6 @@
 </footer>
 
 <script>
-window.applyBeautyRefresh = function applyBeautyRefresh(){
-  if (window.__beautyRefreshApplied) return;
-  window.__beautyRefreshApplied = true;
-
-  const ADDED_ON = "2026-06-30";
-  const added = (name) => `${name}（${ADDED_ON}新增）`;
-
-  PRODUCTS.push(
-    {cat:"skincare",sub:"化妆水",tier:"lux",brand:"SK-II",name:added("Facial Treatment Essence 神仙水"),price:"约¥18,000+",note:"J-beauty 代表性精华水，适合放在精简护肤里的贵价核心位。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/products/c7a6ab4f4b0d48c49f0eca50bf1c1fbb_7d429fd7-c7a0-4dad-a322-21fa2fc80875.jpg?v=1655982991"},
-    {cat:"skincare",sub:"化妆水",tier:"value",brand:"Hada Labo 肌ラボ",name:added("Gokujyun Premium 极润金瓶"),price:"≈¥1,200",note:"浓润补水地基，适合干燥、上妆卡粉时加一层打底。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Hada-Labo-Gokujyun-Premium-Hyaluronic-Acid-Lotion-170ml-1-2026-04-09T06_26_19.325Z.jpg?v=1775716506"},
-    {cat:"skincare",sub:"化妆水",tier:"value",brand:"Round Lab",name:added("1025 Dokdo Toner"),price:"约¥2,500",note:"清爽水感化妆水，适合想要干净、轻薄、不黏腻的日常护理。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/Round-Lab-1025-DOKDO-Toner.jpg?v=1756219846"},
-    {cat:"skincare",sub:"防晒",tier:"value",brand:"Round Lab",name:added("Birch Juice Moisturizing Sun Cream"),price:"约¥3,000",note:"韩系水润防晒，肤感像乳液，适合通勤和淡妆前。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/Soko-Glam-Round-Lab-Birch-Juice-Moisturizing-UVLOCK.jpg?v=1752798415"},
-    {cat:"skincare",sub:"防晒",tier:"value",brand:"Canmake",name:added("Mermaid Skin Gel UV"),price:"≈¥770",note:"日本药妆店经典水感防晒，轻薄、便携、补涂友好。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/canmake-mermaid-skin-gel-uv-558182.jpg?v=1688730512"},
-    {cat:"skincare",sub:"洁面",tier:"value",brand:"Senka 洗颜专科",name:added("Perfect Whip"),price:"≈¥600",note:"日本经典开架洁面，泡沫绵密，适合预算友好的基础款。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Senka-Perfect-Whip-Cleansing-Foam-120g-1-2025-08-25T00_18_50.384Z.jpg?v=1756081192"},
-    {cat:"skincare",sub:"化妆水",tier:"value",brand:"Anua",name:added("Heartleaf 77 Toner"),price:"约¥2,800",note:"鱼腥草舒缓路线，适合泛红、熬夜后不稳定的皮肤状态。",img:"https://cdn.shopify.com/s/files/1/0980/9700/files/Anua_HeartleafSoothingToner_5.jpg?v=1762547388"},
-    {cat:"skincare",sub:"面膜",tier:"value",brand:"Biodance",name:added("Bio-Collagen Real Deep Mask"),price:"约¥350/片",note:"胶原水凝膜路线，适合重要约会前一晚做饱满光泽感。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/Biodance-Bio-Collagen-Real-Deep-Mas.jpg?v=1756221057"},
-    {cat:"skincare",sub:"精华",tier:"value",brand:"numbuzin",name:added("No.3 Skin Softening Serum"),price:"约¥3,200",note:"主打肤质细腻和毛孔观感，适合想做柔焦皮肤质感的人。",img:"https://us.numbuzin.com/cdn/shop/files/250527_________09.jpg?v=1748507624&width=2048"},
-    {cat:"skincare",sub:"精华",tier:"value",brand:"Torriden",name:added("Dive-In Serum"),price:"约¥2,700",note:"轻薄补水精华，油混皮和夏天也比较容易坚持用。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/TorridenDiveinSerum.jpg?v=1757342453"},
-
-    {cat:"makeup",sub:"底妆",tier:"lux",brand:"Dior",name:added("Forever Skin Glow Foundation"),price:"约¥8,500",note:"高级光泽底妆，适合想要精致但不厚重的奶油肌。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/products/a6dc6785a5444d6882fa1075191da992_815d3731-e5e8-45ee-b522-9380da406a74.jpg?v=1688576751"},
-    {cat:"makeup",sub:"遮瑕",tier:"lux",brand:"Cle de Peau Beaute",name:added("Concealer"),price:"约¥12,000",note:"贵价遮瑕代表，适合局部修饰黑眼圈、斑点和瑕疵。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Cle_De_Peau_Beaute_Concealer_N_DO_01.jpg?v=1777164801"},
-    {cat:"makeup",sub:"底妆",tier:"lux",brand:"Shiseido",name:added("RevitalEssence Skin Glow Foundation"),price:"约¥9,000",note:"日系养肤光泽粉底，和透明感主题很搭。",img:"https://cdn.shopify.com/s/files/1/1408/0624/files/SC-shisei230904-01_m_ex.jpg?v=1695630232"},
-    {cat:"makeup",sub:"底妆",tier:"lux",brand:"RMK",name:added("Liquid Foundation"),price:"约¥7,000",note:"日系轻薄底妆代表，适合保留皮肤纹理的自然妆感。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/RMK_Liquid_Foundation_100_01.jpg?v=1737321985"},
-    {cat:"makeup",sub:"唇",tier:"value",brand:"Rom&nd",name:added("Juicy Lasting Tint"),price:"约¥1,500",note:"韩系玻璃唇爆款，适合做清透、甜甜的日常唇色。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/Soko-Glam-PDP-Juicy-Lasting-Tint.png?v=1756220307"},
-    {cat:"makeup",sub:"唇",tier:"value",brand:"Laka",name:added("Fruity Glam Tint"),price:"约¥2,200",note:"水光感更明显，适合年轻、明亮、轻甜的唇妆。",img:"https://cdn.shopify.com/s/files/1/0267/7676/4606/files/LAKA_Fruity_Glam_Tint.png?v=1760352441"},
-    {cat:"makeup",sub:"眼影",tier:"value",brand:"Dasique",name:added("Eyeshadow Palette"),price:"约¥3,500",note:"韩系柔雾眼影盘，颜色温柔，适合低饱和约会妆。",img:"https://cdn.shopify.com/s/files/1/0824/9262/1080/files/US_e505ca10-2d65-48ab-a1e2-d3d0de53bf8a.jpg?v=1758680780"},
-    {cat:"makeup",sub:"唇",tier:"value",brand:"Amuse",name:added("Dew Tint"),price:"约¥2,300",note:"轻薄水润唇釉，适合自然血色和素颜妆。",img:"https://cdn.shopify.com/s/files/1/0600/4493/5332/files/6_06FigDew.webp?v=1755478526"},
-    {cat:"makeup",sub:"腮红",tier:"lux",brand:"Jill Stuart",name:added("Bloom Mix Blush"),price:"约¥5,800",note:"包装和颜色都很女性化，适合作为页面里的颜值亮点。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/jill-stuart-bloom-mix-blush-compact-105409.jpg?v=1735338542"},
-    {cat:"makeup",sub:"定妆",tier:"lux",brand:"Decorte",name:added("Loose Powder"),price:"约¥6,500",note:"日系柔焦散粉，适合把妆面压成细腻的雾光感。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/colors_image_00.jpg?v=1705993641"},
-
-    {cat:"hair",sub:"修护发膜",tier:"value",brand:"Shiseido Tsubaki",name:added("Premium Repair Hair Mask"),price:"≈¥1,200",note:"日本药妆发膜经典款，适合毛躁、干枯发尾的日常修护。",img:"https://cdn.shopify.com/s/files/1/0378/7590/8747/files/TsubakiEXRepairMask.jpg?v=1698940310"},
-    {cat:"hair",sub:"发油造型",tier:"value",brand:"& honey",name:added("Melty / Deep Moist Hair Oil"),price:"≈¥1,500",note:"甜美日系发油，适合做发尾光泽和柔顺感。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-AHNY-DPMOIL-180-ViCREA_honey_Deep_Moist_Hair_Oil_3.jpg?v=1743420225"},
-    {cat:"hair",sub:"发油造型",tier:"lux",brand:"Milbon",name:added("Elujuda Hair Treatment"),price:"约¥4,000",note:"沙龙感日系免洗护发，适合精致、轻盈的发丝状态。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Milbon-Deesse-Elujuda-Emulsion-120g-1-2025-09-03T07_24_40.036Z.jpg?v=1756884432"},
-    {cat:"hair",sub:"发油造型",tier:"value",brand:"Fino",name:added("Premium Touch Hair Oil"),price:"≈¥1,400",note:"和 Fino 发膜成套，适合预算友好的光泽发护理。",img:"https://cdn.shopify.com/s/files/1/0378/7590/8747/files/FinoHairOilpackaging.jpg?v=1763459383"},
-    {cat:"hair",sub:"造型器",tier:"lux",brand:"ReFa",name:added("Beautech Dryer"),price:"约¥45,000",note:"日系高端吹风机，适合追求顺滑、蓬松和低热损伤。",img:"https://www.refa.net/en/item/images/OG_67_ReFa_BEAUTECH_DRYER.jpg"},
-
-    {cat:"body",sub:"护手",tier:"value",brand:"Jill Stuart",name:added("Hand Cream"),price:"约¥2,500",note:"香香软软的护手霜，包装非常适合可爱女性化页面。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Jill_Stuart_White_Floral_Hand_Cream_Deep_Moisture_01.webp?v=1727398505"},
-    {cat:"body",sub:"身体乳",tier:"lux",brand:"Dior",name:added("Miss Dior Body Milk"),price:"约¥9,000",note:"香氛身体乳，适合把身体护理做成更有仪式感的一步。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/products/50431db7d1c94663aae18d37d7e4dc2d.jpg?v=1690828966"},
-    {cat:"body",sub:"身体乳",tier:"lux",brand:"Laura Mercier",name:added("Ambre Vanille Body Cream"),price:"约¥8,000",note:"甜暖香草身体霜，适合秋冬和约会前护理。",img:"https://cdn.shopify.com/s/files/1/0615/5265/6623/files/LM_HO24_SerumBC_AmbreVanille_Jumbo_Silo_R150_3000x3000_fbd97b59-dd92-48ae-ab33-f259cd887ff0.png?v=1782771175"},
-    {cat:"body",sub:"身体乳",tier:"value",brand:"Naturie",name:added("Hatomugi Skin Conditioner"),price:"≈¥900",note:"便宜大碗薏仁水，脸身湿敷都能用，适合日常补水。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Imju-Naturie-Hatomugi-Skin-Conditioner-Job-s-Tears-Lotion-500ml-1-2024-06-14T03_21_38.957Z.jpg?v=1743422443"},
-    {cat:"body",sub:"泡澡",tier:"value",brand:"Kneipp",name:added("Bath Salt"),price:"≈¥900",note:"日本药妆泡澡浴盐，适合放松、睡前和身体香气氛围。",img:"https://cdn.shopify.com/s/files/1/2170/7541/files/Kneipp-Mineral-Bath-Salt---Everything_s-Gonna-Be-Alright.jpg?v=1708635324"},
-
-    {cat:"scent",sub:"香水",tier:"lux",brand:"Dior",name:added("Miss Dior Blooming Bouquet"),price:"约¥18,000",note:"清甜花香，女性感强，适合温柔明亮的日常印象。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/products/b4bf0d7f0a274b9890bcc9939c13f990_befbe90a-e723-487b-a70f-a955f2c30fc3.jpg?v=1655937264"},
-    {cat:"scent",sub:"香水",tier:"lux",brand:"Chanel",name:added("Chance Eau Tendre"),price:"约¥20,000",note:"温柔花果香，干净、柔软、不压人。"},
-    {cat:"scent",sub:"香水",tier:"lux",brand:"Jo Malone",name:added("English Pear & Freesia"),price:"约¥20,000",note:"梨与小苍兰，轻盈清新，适合通勤和约会。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-30ml-690251019090-1_911680e6-a78a-4815-a3f9-d3b7d1019aac.jpg?v=1775750873"},
-    {cat:"scent",sub:"香水",tier:"lux",brand:"Diptyque",name:added("Eau Rose"),price:"约¥24,000",note:"玫瑰感更明显，适合女性化、柔软、有记忆点的气味。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/global_images-3700431435002-1_8bdbfa76-4603-4fa4-8224-bade82155471.jpg?v=1775750749"},
-    {cat:"scent",sub:"皂感清新",tier:"value",brand:"Maison Margiela",name:added("Lazy Sunday Morning"),price:"约¥16,200",note:"干净皂感和柔软床单气味，和透明感主题高度匹配。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/files/7070f9ccf22d4f6d9de5dfbdb094875c.jpg?v=1764083214"},
-    {cat:"scent",sub:"香水",tier:"value",brand:"SHIRO",name:added("White Lily"),price:"≈¥4,000",note:"比皂感更柔一点的白花香，适合清淡女性气质。",img:"https://cdn.shopify.com/s/files/1/2418/1099/products/12722.jpg?v=1697445005"},
-
-    {cat:"oral",sub:"牙膏/美白",tier:"value",brand:"Apagard",name:added("Premio Toothpaste"),price:"≈¥1,400",note:"日本美白牙膏代表，适合日常去渍和维持牙齿干净感。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-SANG-APAPRE-MI100-Sangi_Apagard_Premio_Premium_Toothpaste_Extra_Mint_105g-2023-09-27T14_13_32.jpg?v=1746157310"},
-    {cat:"oral",sub:"牙膏/美白",tier:"value",brand:"Marvis",name:added("Whitening Mint"),price:"约¥1,800",note:"包装漂亮，适合浴室台面，也适合页面展示。",img:"https://www.thegroomingclinic.com/cdn/shop/products/marvis_whitening_mint_toothpaste.jpg?v=1657701765"},
-    {cat:"oral",sub:"电动牙刷",tier:"lux",brand:"Philips Sonicare",name:added("DiamondClean"),price:"约¥35,000",note:"高端声波电动牙刷，适合口腔护理升级。"},
-    {cat:"oral",sub:"冲牙护理",tier:"value",brand:"Nonio",name:added("Mouthwash"),price:"≈¥700",note:"日本口气护理常见款，适合随手补齐清洁感。"},
-
-    {cat:"tools",sub:"微电流",tier:"lux",brand:"Panasonic",name:added("Ion Effector / Beauty Device"),price:"约¥35,000",note:"日系美容仪代表，适合导入、保湿和居家护理仪式感。"},
-    {cat:"tools",sub:"微电流",tier:"lux",brand:"Medicube",name:added("Age-R Booster Pro"),price:"约¥38,000",note:"韩系热门美容仪，一台覆盖多种居家护理场景。",img:"https://cdn.shopify.com/s/files/1/0156/3905/2336/files/250820_BoosterPro01_1.jpg?v=1765875402"},
-    {cat:"tools",sub:"微电流",tier:"lux",brand:"YA-MAN",name:added("Photo Plus"),price:"约¥55,000",note:"日本家用美容仪经典款，适合进阶护理。",img:"https://cdn.shopify.com/s/files/1/0188/2151/3316/files/Designsanstitre-7.jpg?v=1711736946"},
-    {cat:"tools",sub:"按摩",tier:"value",brand:"ReFa",name:added("Heart Brush"),price:"≈¥2,500",note:"颜值很高的爱心梳，女性化和可爱感都很强。",img:"https://www.refa.net/en/item/images/OG_90_ReFa_HEART_BRUSH.jpg"},
-    {cat:"tools",sub:"按摩",tier:"value",brand:"Shiseido",name:added("Foundation Brush 131"),price:"≈¥2,000",note:"日系底妆刷经典，适合把底妆拍得更薄更服帖。",img:"https://cdn.shopify.com/s/files/1/1408/0624/products/shiseido_brush__77721.1440736502.1280.1280.jpg?v=1533533354"}
-  );
-
-  const style = document.createElement("style");
-  style.textContent = `
-    :root{--paper:#fff7f8;--paper-2:#fff0f3;--ink:#3d3035;--ink-soft:#8a6f78;--line:#f0d7de;--card:rgba(255,255,255,.88);--water:#d96f91;--water-bg:#ffe6ee;--slate:#b68a9a;--slate-bg:#f9e9ef;--gold:#c49a55;--gold-bg:#fff2d7;--shadow:0 10px 30px -22px rgba(165,75,105,.45),0 2px 10px rgba(165,75,105,.08)}
-    body{background:linear-gradient(180deg,rgba(255,247,248,.96),rgba(255,252,247,.98) 42%,rgba(247,252,248,.92)),radial-gradient(90% 55% at 10% -10%,rgba(255,221,232,.72),transparent 58%),radial-gradient(80% 55% at 96% 8%,rgba(232,246,238,.86),transparent 60%)}
-    header.hero{padding:66px 0 30px}.eyebrow{color:#d96f91;letter-spacing:.34em}h1.title{font-size:58px;color:#49353c;line-height:1.06;text-shadow:0 1px 0 #fff}h1.title .thin{color:#c47b93;font-weight:500}.lede{max-width:700px;color:#806974}.lede b{color:#bd5f80}.stats{border-top-color:#f0d7de;gap:14px}.stat{background:rgba(255,255,255,.68);border:1px solid #f2dbe2;border-radius:8px;padding:12px 16px;min-width:132px}.stat .n{color:#bd5f80}.stat .l{color:#9b7a86}
-    .controls{background:rgba(255,247,248,.84);border-color:#f0d7de;box-shadow:0 8px 28px -24px rgba(165,75,105,.45)}.search{border-color:#edcfd8;border-radius:8px;background:rgba(255,255,255,.92);box-shadow:inset 0 1px 0 #fff;color:#4b3840}.search::placeholder{color:#b99ba6}.search:focus{outline-color:#d96f91}.chip{border-color:#edcfd8;background:rgba(255,255,255,.7);color:#8b6774;box-shadow:0 1px 0 rgba(255,255,255,.8)}.chip:hover{border-color:#d96f91;color:#bd5f80;background:#fff}.chip[aria-pressed="true"]{background:#d96f91;border-color:#d96f91;color:#fff}.chip.tier[aria-pressed="true"]{background:#c49a55;border-color:#c49a55;color:#fff}.chip-label{color:#b99ba6}
-    main{padding-top:38px}.group-head{background:linear-gradient(90deg,rgba(255,229,237,.72),rgba(255,255,255,0));border-left:4px solid #e6a4b9;padding:12px 14px;border-radius:8px;margin-top:38px}.group-head h2{color:#573b46}.group-head .en,.sub-head .sc{color:#bd91a0}.group-head .ct{color:#9c7582}.sub-head{border-bottom-color:#f0d7de}.sub-head h3{color:#bd5f80}.sub-head .fn{color:#8d747d}.grid{gap:18px}.card{border-color:#f0d7de;border-radius:8px;background:rgba(255,255,255,.9);box-shadow:var(--shadow)}.card:hover{border-color:#e6a4b9;transform:translateY(-2px)}
-    .thumb{background:linear-gradient(135deg,#fff 0%,#ffe8f0 52%,#f3fbf6 100%);border-bottom-color:#f0d7de}.thumb img{filter:saturate(1.04) contrast(.98)}.mono{background:linear-gradient(135deg,rgba(217,111,145,.42),rgba(196,154,85,.28));border-color:rgba(255,255,255,.72)}.ph-tag{color:#bd91a0}.brand{color:#b06f84}.name{color:#4a343d}.note{color:#806974}.price{color:#9d5f75}.badge.core{background:#ffe3ec;color:#a64c6b}.badge.value{background:#f6e9ef;color:#8c6070}.badge.lux{background:#fff0cd;color:#9a6d25}.buy{border-color:#edcfd8;background:rgba(255,247,249,.76);color:#a56b7f}.buy:hover{border-color:#d96f91;color:#bd5f80;background:#fff}.card.bought .buy{background:#ffe3ec;color:#a64c6b;border-color:#d96f91}
-    footer{border-top-color:#f0d7de}footer .note-box{border-color:#f0d7de;border-radius:8px;background:rgba(255,255,255,.78);color:#806974}footer .sign{color:#bd5f80}@media (max-width:600px){h1.title{font-size:38px}.stat{min-width:calc(50% - 8px);padding:10px 12px}.grid{gap:12px}}
-  `;
-  document.head.appendChild(style);
-
-  document.querySelector(".eyebrow").textContent = "Soft Glow Beauty Diary";
-  document.querySelector(".title").innerHTML = "甜美透明感清单<br><span class=\"thin\">Beauty Wish List</span>";
-  document.querySelector(".lede").innerHTML = "一份更柔软、更甜一点的变美清单：从<b>清透底子</b>、<b>奶油光泽妆</b>到<b>香香的身体护理</b>，把每天会用到的小东西整理成可以慢慢勾选的美丽愿望单。";
-  document.querySelector("footer .note-box").innerHTML = "<b>今日新增</b>：2026-06-30 已补入一批日系、韩系和轻奢美妆护理单品；所有新产品名后都标了新增日期，方便你以后筛选和调整。";
-  document.querySelector("footer .sign").textContent = "慢慢变漂亮，也是一种很温柔的自我照顾。";
-};
-
-
-const SUPABASE_URL = "https://jmfuujyeodhjhgxezqpv.supabase.co";
-const SUPABASE_KEY = "sb_publishable_zDXnDnWE665dD9kMmSqxOQ_U0Y_V5ib";
-const SUPABASE_PRODUCTS_ENDPOINT = SUPABASE_URL + "/rest/v1/beauty_products?active=eq.true&select=cat,sub,tier,brand,name,price,note,img&order=sort_order.asc,id.asc";
-const SUPABASE_BOUGHT_ENDPOINT = SUPABASE_URL + "/rest/v1/beauty_bought_state?id=eq.default";
-
 /* ====== 产品数据：加 img 字段即可显示真实图片 ====== */
 const CATS = [
   {id:"skincare", zh:"护肤", en:"Skincare"},
@@ -538,52 +452,10 @@ let bought = (function loadBought(){
   }
 })();
 
-let boughtSaveTimer;
 function saveBought(){
-  const items = [...bought];
   try{
-    localStorage.setItem(STORE_KEY, JSON.stringify(items));
+    localStorage.setItem(STORE_KEY, JSON.stringify([...bought]));
   }catch(e){ /* 被禁用时静默降级，不报错 */ }
-  clearTimeout(boughtSaveTimer);
-  boughtSaveTimer = setTimeout(()=>saveBoughtToSupabase(items), 250);
-}
-
-async function loadBoughtFromSupabase(){
-  try{
-    const res = await fetch(SUPABASE_BOUGHT_ENDPOINT + "&select=items&limit=1", {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY,
-      },
-    });
-    if(!res.ok) throw new Error("Supabase bought state request failed: " + res.status);
-    const rows = await res.json();
-    const items = rows && rows[0] && Array.isArray(rows[0].items) ? rows[0].items : [];
-    bought = new Set(items);
-    try{ localStorage.setItem(STORE_KEY, JSON.stringify(items)); }catch(e){}
-    return true;
-  }catch(e){
-    console.warn("Using local bought state fallback", e);
-    return false;
-  }
-}
-
-async function saveBoughtToSupabase(items){
-  try{
-    const res = await fetch(SUPABASE_BOUGHT_ENDPOINT, {
-      method: "PATCH",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({items, updated_at: new Date().toISOString()}),
-    });
-    if(!res.ok) throw new Error("Supabase bought state save failed: " + res.status);
-  }catch(e){
-    console.warn("Bought state saved locally only", e);
-  }
 }
 const isBought = (p)=> bought.has(keyOf(p));
 
@@ -749,37 +621,7 @@ ubt.addEventListener("click",()=>{
   render();
 });
 
-
-async function loadProductsFromSupabase(){
-  try{
-    const res = await fetch(SUPABASE_PRODUCTS_ENDPOINT, {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY,
-      },
-    });
-    if(!res.ok) throw new Error("Supabase products request failed: " + res.status);
-    const rows = await res.json();
-    if(!Array.isArray(rows) || !rows.length) return false;
-    PRODUCTS.splice(0, PRODUCTS.length, ...rows.map((p)=>({
-      cat:p.cat, sub:p.sub || "", tier:p.tier, brand:p.brand, name:p.name,
-      price:p.price || "", note:p.note || "", img:p.img || "",
-    })));
-    return true;
-  }catch(e){
-    console.warn("Using bundled beauty products fallback", e);
-    return false;
-  }
-}
-
-async function startBeautyPage(){
-  if (typeof applyBeautyRefresh === "function") { try { applyBeautyRefresh(); } catch(e) { console.error(e); } }
-  await loadProductsFromSupabase();
-  await loadBoughtFromSupabase();
-  buildChips(); stats(); render();
-}
-
-startBeautyPage();
+buildChips(); stats(); render();
 </script>
 </body>
 </html>

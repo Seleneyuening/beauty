@@ -322,8 +322,6 @@ window.applyBeautyRefresh = function applyBeautyRefresh(){
   document.querySelector("footer .sign").textContent = "慢慢变漂亮，也是一种很温柔的自我照顾。";
 };
 
-</script>
-<script>
 /* ====== 产品数据：加 img 字段即可显示真实图片 ====== */
 const CATS = [
   {id:"skincare", zh:"护肤", en:"Skincare"},
@@ -703,7 +701,7 @@ ubt.addEventListener("click",()=>{
   render();
 });
 
-applyBeautyRefresh(); buildChips(); stats(); render();
+if (typeof applyBeautyRefresh === "function") { try { applyBeautyRefresh(); } catch(e) { console.error(e); } } buildChips(); stats(); render();
 </script>
 </body>
 </html>

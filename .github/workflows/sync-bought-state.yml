@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/sync-bought-state.yml'
+      - '.github/scripts/sync-bought-state.cjs'
   workflow_dispatch:
 
 permissions:
@@ -15,90 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Patch bought state sync
-        run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const path = 'index.html';
-          let html = fs.readFileSync(path, 'utf8');
-
-          if (!html.includes('const SUPABASE_BOUGHT_ENDPOINT')) {
-            html = html.replace(
-              'const SUPABASE_PRODUCTS_ENDPOINT = SUPABASE_URL + "/rest/v1/beauty_products?active=eq.true&select=cat,sub,tier,brand,name,price,note,img&order=sort_order.asc,id.asc";',
-              'const SUPABASE_PRODUCTS_ENDPOINT = SUPABASE_URL + "/rest/v1/beauty_products?active=eq.true&select=cat,sub,tier,brand,name,price,note,img&order=sort_order.asc,id.asc";\nconst SUPABASE_BOUGHT_ENDPOINT = SUPABASE_URL + "/rest/v1/beauty_bought_state?id=eq.default";'
-            );
-          }
-
-          const oldSave = `function saveBought(){
-  try{
-    localStorage.setItem(STORE_KEY, JSON.stringify([...bought]));
-  }catch(e){ /* 被禁用时静默降级，不报错 */ }
-}`;
-          const newSave = `let boughtSaveTimer;
-function saveBought(){
-  const items = [...bought];
-  try{
-    localStorage.setItem(STORE_KEY, JSON.stringify(items));
-  }catch(e){ /* 被禁用时静默降级，不报错 */ }
-  clearTimeout(boughtSaveTimer);
-  boughtSaveTimer = setTimeout(()=>saveBoughtToSupabase(items), 250);
-}
-
-async function loadBoughtFromSupabase(){
-  try{
-    const res = await fetch(SUPABASE_BOUGHT_ENDPOINT + "&select=items&limit=1", {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY,
-      },
-    });
-    if(!res.ok) throw new Error("Supabase bought state request failed: " + res.status);
-    const rows = await res.json();
-    const items = rows && rows[0] && Array.isArray(rows[0].items) ? rows[0].items : [];
-    bought = new Set(items);
-    try{ localStorage.setItem(STORE_KEY, JSON.stringify(items)); }catch(e){}
-    return true;
-  }catch(e){
-    console.warn("Using local bought state fallback", e);
-    return false;
-  }
-}
-
-async function saveBoughtToSupabase(items){
-  try{
-    const res = await fetch(SUPABASE_BOUGHT_ENDPOINT, {
-      method: "PATCH",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({items, updated_at: new Date().toISOString()}),
-    });
-    if(!res.ok) throw new Error("Supabase bought state save failed: " + res.status);
-  }catch(e){
-    console.warn("Bought state saved locally only", e);
-  }
-}`;
-          if (html.includes(oldSave)) html = html.replace(oldSave, newSave);
-          else if (!html.includes('async function loadBoughtFromSupabase')) throw new Error('Could not find saveBought block');
-
-          html = html.replace(
-            `async function startBeautyPage(){
-  if (typeof applyBeautyRefresh === "function") { try { applyBeautyRefresh(); } catch(e) { console.error(e); } }
-  await loadProductsFromSupabase();
-  buildChips(); stats(); render();
-}`,
-            `async function startBeautyPage(){
-  if (typeof applyBeautyRefresh === "function") { try { applyBeautyRefresh(); } catch(e) { console.error(e); } }
-  await loadProductsFromSupabase();
-  await loadBoughtFromSupabase();
-  buildChips(); stats(); render();
-}`
-          );
-
-          fs.writeFileSync(path, html);
-          NODE
+        run: node .github/scripts/sync-bought-state.cjs
       - name: Commit generated changes
         run: |
           git config user.name "github-actions[bot]"

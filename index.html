@@ -279,6 +279,8 @@ const PRODUCTS = [
   {cat:"skincare",tier:"value",brand:"美迪惠尔 Mediheal",name:"针对性精华面膜",price:"≈¥200/片",note:"按诉求选系列（控痘/美白/弹力），精华更浓。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/Mediheal-Madecassoside-Essential-Mask.jpg?v=1756218510"},
   {cat:"skincare",tier:"lux",brand:"La Roche-Posay",name:"Cicaplast B5 修复面膜",price:"≈¥300/片",note:"泛红、晒后、刷酸后的急救镇定面膜。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/3c48f4344c4f7dc80c6ab03aadbef6e9.jpg?v=1695916003"},
   {cat:"skincare",tier:"value",brand:"Laneige",name:"睡眠唇膜",price:"约¥3,900",note:"全球唇膜天花板，晚上厚敷、唇部柔软有血色。",img:"https://sentisenti.com/cdn/shop/products/laneige-lip-sleeping-pack-ex-berry-main-oo35mm.jpg?v=1762457741&width=1280"},
+  {cat:"skincare",tier:"value",brand:"Bifesta",name:"眼唇卸妆液",price:"≈¥900",note:"眼唇专用胶束水，温和快速卸浓妆，敏感眼周友好。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Mandom-Bifesta-Micellar-Water-Eye-and-Lip-Makeup-Remover-145ml-1-2025-09-02T05_13_10.492Z.jpg?v=1756790048"},
+  {cat:"skincare",tier:"value",brand:"DHC",name:"药用润唇膏",price:"≈¥700",note:"橄榄系经典润唇膏，滋润不黏，日常护唇标配。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/DHC-Hydrating-Lip-Cream-1-5g-1-2024-02-08T01_35_56.663Z.jpg?v=1743426489"},
 
   // —— 彩妆 ——
   {cat:"makeup",tier:"lux",brand:"Armani",name:"Luminous Silk 粉底",price:"约¥11,200",note:"奢妆粉底标杆，中等遮瑕+高级光泽。",img:"https://maisonbeautique.com/cdn/shop/files/3360372075554_main.jpg?v=1716605050"},
@@ -299,6 +301,13 @@ const PRODUCTS = [
   {cat:"makeup",tier:"lux",brand:"Charlotte Tilbury",name:"Pillow Talk 口红+唇线",price:"约¥5,700",note:"几乎是「自然裸唇」的代名词。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-PillowTalkFair-5056446634243-47.jpg?v=1769555487"},
   {cat:"makeup",tier:"value",brand:"オペラ OPERA",name:"リップティント 唇釉",price:"≈¥1,650",note:"玫瑰豆沙渐层咬唇，自然血色。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Opera_Lip_Tint_N_05_01.jpg?v=1770940899"},
   {cat:"makeup",tier:"value",brand:"ケイト KATE",name:"リップモンスター",price:"≈¥1,540",note:"保湿带色、持久，日常百搭。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Kate_Lip_Monster_01.jpg?v=1772334654"},
+  {cat:"makeup",tier:"lux",brand:"NARS",name:"Light Reflecting 散粉",price:"约¥6,500",note:"柔焦定妆、奶油肌光泽，不显假面、不卡纹。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-Crystal-194251075945-1.jpg?v=1774905878"},
+  {cat:"makeup",tier:"value",brand:"キャンメイク Canmake",name:"Glow Fleur 花瓣腮红",price:"≈¥715",note:"花瓣拼盘腮红，自然好推、显气色，平价常青。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/CanmakeGlowFleurCheeks11.jpg?v=1713184320"},
+  {cat:"makeup",tier:"value",brand:"ケイト KATE",name:"Designing 三色眉粉",price:"≈¥1,200",note:"三色立体眉粉，自然渐层、新手友好。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Kate_Designing_Eyebrow_3D_ex4_01.jpg?v=1772758699"},
+  {cat:"makeup",tier:"value",brand:"Love Liner",name:"液体眼线笔 棕色",price:"≈¥1,650",note:"极细水笔，棕色温柔显色、持久不晕染。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/MSH_Love_Liner_Liquid_Eyeliner_R5_Brown.jpg?v=1770741282"},
+  {cat:"makeup",tier:"value",brand:"Heroine Make",name:"Long & Curl 睫毛膏",price:"≈¥1,200",note:"防水纤长定型，泪汪汪也不晕，开架睫毛常胜款。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/isehan-japan-kiss-me-heroine-make-mascara-advanced-film-624629.jpg?v=1688731767"},
+  {cat:"makeup",tier:"value",brand:"キャンメイク Canmake",name:"Quick Lash Curler 睫毛打底",price:"≈¥760",note:"卷翘定型打底，叠在睫毛膏前更持久不塌。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/canmake-quick-lash-curler-166923.jpg?v=1688730524"},
+  {cat:"makeup",tier:"value",brand:"Shiseido 资生堂",name:"213 睫毛夹",price:"≈¥1,100",note:"传奇睫毛夹，贴合亚洲眼型、卷翘自然，几乎人手一只。",img:"https://cdn.shopify.com/s/files/1/0231/1294/1648/products/SHI2b.jpg?v=1756979612"},
 
   // —— 头发 ——
   {cat:"hair",tier:"lux",brand:"Olaplex",name:"No.3 断键修护",price:"约¥4,900",note:"染烫/热损伤修护的全球标杆。",img:"https://cdn.shopify.com/s/files/1/0568/4484/5206/files/No33oz.jpg?v=1773272378"},

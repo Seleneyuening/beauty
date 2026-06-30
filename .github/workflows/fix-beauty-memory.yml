@@ -1,0 +1,55 @@
+name: Fix beauty memory sync
+
+on:
+  push:
+    paths:
+      - .github/workflows/fix-beauty-memory.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch bought-state memory sync
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const path = 'index.html';
+          let s = fs.readFileSync(path, 'utf8');
+
+          if (!s.includes('SUPABASE_BOUGHT_ENDPOINT')) {
+            s = s.replace(
+              'const STORE_KEY = "beautyDir.bought.v1";\nconst keyOf = (p)=> p.brand + "|" + p.name;   // key = brand+name\n',
+              'const STORE_KEY = "beautyDir.bought.v1";\nconst SUPABASE_URL = "https://jmfuujyeodhjhgxezqpv.supabase.co";\nconst SUPABASE_KEY = "sb_publishable_zDXnDnWE665dD9kMmSqxOQ_U0Y_V5ib";\nconst SUPABASE_BOUGHT_ENDPOINT = SUPABASE_URL + "/rest/v1/beauty_bought_state?id=eq.default";\nconst keyOf = (p)=> p.brand + "|" + p.name;   // key = brand+name\nlet saveBoughtTimer;\n'
+            );
+          }
+
+          const oldSave = `function saveBought(){\n  try{\n    localStorage.setItem(STORE_KEY, JSON.stringify([...bought]));\n  }catch(e){ /* 被禁用时静默降级，不报错 */ }\n}\n`;
+          const newSave = `function saveBought(){\n  const items = [...bought];\n  try{\n    localStorage.setItem(STORE_KEY, JSON.stringify(items));\n  }catch(e){ /* 被禁用时静默降级，不报错 */ }\n  clearTimeout(saveBoughtTimer);\n  saveBoughtTimer = setTimeout(()=>saveBoughtToSupabase(items), 250);\n}\n\nasync function loadBoughtFromSupabase(){\n  try{\n    const res = await fetch(SUPABASE_BOUGHT_ENDPOINT + "&select=items", {\n      headers:{\n        apikey: SUPABASE_KEY,\n        Authorization: "Bearer " + SUPABASE_KEY,\n      },\n      cache:"no-store",\n    });\n    if(!res.ok) throw new Error("Supabase read failed");\n    const row = (await res.json())[0];\n    if(row && Array.isArray(row.items)){\n      bought = new Set(row.items);\n      try{ localStorage.setItem(STORE_KEY, JSON.stringify(row.items)); }catch(e){}\n    }\n  }catch(e){\n    console.warn("读取云端已入手状态失败，继续使用本机记录。", e);\n  }\n}\n\nasync function saveBoughtToSupabase(items){\n  try{\n    const res = await fetch(SUPABASE_BOUGHT_ENDPOINT, {\n      method:"PATCH",\n      headers:{\n        apikey: SUPABASE_KEY,\n        Authorization: "Bearer " + SUPABASE_KEY,\n        "Content-Type":"application/json",\n        Prefer:"return=minimal",\n      },\n      body: JSON.stringify({items, updated_at: new Date().toISOString()}),\n    });\n    if(res.status === 404 || res.status === 406){\n      await fetch(SUPABASE_URL + "/rest/v1/beauty_bought_state", {\n        method:"POST",\n        headers:{\n          apikey: SUPABASE_KEY,\n          Authorization: "Bearer " + SUPABASE_KEY,\n          "Content-Type":"application/json",\n          Prefer:"resolution=merge-duplicates,return=minimal",\n        },\n        body: JSON.stringify({id:"default", items, updated_at: new Date().toISOString()}),\n      });\n    }\n  }catch(e){\n    console.warn("保存云端已入手状态失败，已保留本机记录。", e);\n  }\n}\n`;
+          if (s.includes(oldSave)) s = s.replace(oldSave, newSave);
+
+          const oldInit = 'buildChips(); stats(); render();\n</script>';
+          const newInit = `async function startBeautyPage(){\n  await loadBoughtFromSupabase();\n  buildChips();\n  stats();\n  render();\n}\nstartBeautyPage();\n</script>`;
+          if (s.includes(oldInit)) s = s.replace(oldInit, newInit);
+
+          if (!s.includes('SUPABASE_BOUGHT_ENDPOINT') || !s.includes('loadBoughtFromSupabase') || !s.includes('saveBoughtToSupabase') || !s.includes('startBeautyPage')) {
+            throw new Error('Memory sync patch did not apply cleanly');
+          }
+
+          fs.writeFileSync(path, s);
+          NODE
+      - name: Commit patch
+        run: |
+          if git diff --quiet index.html; then
+            echo "No index.html changes needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Fix beauty bought-state memory sync"
+          git push

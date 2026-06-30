@@ -467,6 +467,7 @@ function saveBought(){
 
 async function loadBoughtFromSupabase(){
   try{
+    const localItems = [...bought];
     const res = await fetch(SUPABASE_BOUGHT_ENDPOINT + "&select=items", {
       headers:{
         apikey: SUPABASE_KEY,
@@ -476,9 +477,12 @@ async function loadBoughtFromSupabase(){
     });
     if(!res.ok) throw new Error("Supabase read failed");
     const row = (await res.json())[0];
-    if(row && Array.isArray(row.items)){
-      bought = new Set(row.items);
-      try{ localStorage.setItem(STORE_KEY, JSON.stringify(row.items)); }catch(e){}
+    const remoteItems = row && Array.isArray(row.items) ? row.items : [];
+    const mergedItems = [...new Set([...remoteItems, ...localItems])];
+    bought = new Set(mergedItems);
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(mergedItems)); }catch(e){}
+    if(mergedItems.length !== remoteItems.length){
+      saveBoughtToSupabase(mergedItems);
     }
   }catch(e){
     console.warn("读取云端已入手状态失败，继续使用本机记录。", e);
@@ -487,28 +491,16 @@ async function loadBoughtFromSupabase(){
 
 async function saveBoughtToSupabase(items){
   try{
-    const res = await fetch(SUPABASE_BOUGHT_ENDPOINT, {
-      method:"PATCH",
+    await fetch(SUPABASE_URL + "/rest/v1/beauty_bought_state", {
+      method:"POST",
       headers:{
         apikey: SUPABASE_KEY,
         Authorization: "Bearer " + SUPABASE_KEY,
         "Content-Type":"application/json",
-        Prefer:"return=minimal",
+        Prefer:"resolution=merge-duplicates,return=minimal",
       },
-      body: JSON.stringify({items, updated_at: new Date().toISOString()}),
+      body: JSON.stringify({id:"default", items, updated_at: new Date().toISOString()}),
     });
-    if(res.status === 404 || res.status === 406){
-      await fetch(SUPABASE_URL + "/rest/v1/beauty_bought_state", {
-        method:"POST",
-        headers:{
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY,
-          "Content-Type":"application/json",
-          Prefer:"resolution=merge-duplicates,return=minimal",
-        },
-        body: JSON.stringify({id:"default", items, updated_at: new Date().toISOString()}),
-      });
-    }
   }catch(e){
     console.warn("保存云端已入手状态失败，已保留本机记录。", e);
   }

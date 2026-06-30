@@ -326,6 +326,7 @@ window.applyBeautyRefresh = function applyBeautyRefresh(){
 const SUPABASE_URL = "https://jmfuujyeodhjhgxezqpv.supabase.co";
 const SUPABASE_KEY = "sb_publishable_zDXnDnWE665dD9kMmSqxOQ_U0Y_V5ib";
 const SUPABASE_PRODUCTS_ENDPOINT = SUPABASE_URL + "/rest/v1/beauty_products?active=eq.true&select=cat,sub,tier,brand,name,price,note,img&order=sort_order.asc,id.asc";
+const SUPABASE_BOUGHT_ENDPOINT = SUPABASE_URL + "/rest/v1/beauty_bought_state?id=eq.default";
 
 /* ====== 产品数据：加 img 字段即可显示真实图片 ====== */
 const CATS = [
@@ -537,10 +538,52 @@ let bought = (function loadBought(){
   }
 })();
 
+let boughtSaveTimer;
 function saveBought(){
+  const items = [...bought];
   try{
-    localStorage.setItem(STORE_KEY, JSON.stringify([...bought]));
+    localStorage.setItem(STORE_KEY, JSON.stringify(items));
   }catch(e){ /* 被禁用时静默降级，不报错 */ }
+  clearTimeout(boughtSaveTimer);
+  boughtSaveTimer = setTimeout(()=>saveBoughtToSupabase(items), 250);
+}
+
+async function loadBoughtFromSupabase(){
+  try{
+    const res = await fetch(SUPABASE_BOUGHT_ENDPOINT + "&select=items&limit=1", {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+      },
+    });
+    if(!res.ok) throw new Error("Supabase bought state request failed: " + res.status);
+    const rows = await res.json();
+    const items = rows && rows[0] && Array.isArray(rows[0].items) ? rows[0].items : [];
+    bought = new Set(items);
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(items)); }catch(e){}
+    return true;
+  }catch(e){
+    console.warn("Using local bought state fallback", e);
+    return false;
+  }
+}
+
+async function saveBoughtToSupabase(items){
+  try{
+    const res = await fetch(SUPABASE_BOUGHT_ENDPOINT, {
+      method: "PATCH",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({items, updated_at: new Date().toISOString()}),
+    });
+    if(!res.ok) throw new Error("Supabase bought state save failed: " + res.status);
+  }catch(e){
+    console.warn("Bought state saved locally only", e);
+  }
 }
 const isBought = (p)=> bought.has(keyOf(p));
 
@@ -732,6 +775,7 @@ async function loadProductsFromSupabase(){
 async function startBeautyPage(){
   if (typeof applyBeautyRefresh === "function") { try { applyBeautyRefresh(); } catch(e) { console.error(e); } }
   await loadProductsFromSupabase();
+  await loadBoughtFromSupabase();
   buildChips(); stats(); render();
 }
 

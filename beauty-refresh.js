@@ -1,0 +1,79 @@
+window.applyBeautyRefresh = function applyBeautyRefresh(){
+  if (window.__beautyRefreshApplied) return;
+  window.__beautyRefreshApplied = true;
+
+  const ADDED_ON = "2026-06-30";
+  const added = (name) => `${name}（${ADDED_ON}新增）`;
+
+  PRODUCTS.push(
+    {cat:"skincare",sub:"化妆水",tier:"lux",brand:"SK-II",name:added("Facial Treatment Essence 神仙水"),price:"约¥18,000+",note:"J-beauty 代表性精华水，适合放在精简护肤里的贵价核心位。"},
+    {cat:"skincare",sub:"化妆水",tier:"value",brand:"Hada Labo 肌ラボ",name:added("Gokujyun Premium 极润金瓶"),price:"≈¥1,200",note:"浓润补水地基，适合干燥、上妆卡粉时加一层打底。"},
+    {cat:"skincare",sub:"化妆水",tier:"value",brand:"Round Lab",name:added("1025 Dokdo Toner"),price:"约¥2,500",note:"清爽水感化妆水，适合想要干净、轻薄、不黏腻的日常护理。"},
+    {cat:"skincare",sub:"防晒",tier:"value",brand:"Round Lab",name:added("Birch Juice Moisturizing Sun Cream"),price:"约¥3,000",note:"韩系水润防晒，肤感像乳液，适合通勤和淡妆前。"},
+    {cat:"skincare",sub:"防晒",tier:"value",brand:"Canmake",name:added("Mermaid Skin Gel UV"),price:"≈¥770",note:"日本药妆店经典水感防晒，轻薄、便携、补涂友好。"},
+    {cat:"skincare",sub:"洁面",tier:"value",brand:"Senka 洗颜专科",name:added("Perfect Whip"),price:"≈¥600",note:"日本经典开架洁面，泡沫绵密，适合预算友好的基础款。"},
+    {cat:"skincare",sub:"化妆水",tier:"value",brand:"Anua",name:added("Heartleaf 77 Toner"),price:"约¥2,800",note:"鱼腥草舒缓路线，适合泛红、熬夜后不稳定的皮肤状态。"},
+    {cat:"skincare",sub:"面膜",tier:"value",brand:"Biodance",name:added("Bio-Collagen Real Deep Mask"),price:"约¥350/片",note:"胶原水凝膜路线，适合重要约会前一晚做饱满光泽感。"},
+    {cat:"skincare",sub:"精华",tier:"value",brand:"numbuzin",name:added("No.3 Skin Softening Serum"),price:"约¥3,200",note:"主打肤质细腻和毛孔观感，适合想做柔焦皮肤质感的人。"},
+    {cat:"skincare",sub:"精华",tier:"value",brand:"Torriden",name:added("Dive-In Serum"),price:"约¥2,700",note:"轻薄补水精华，油混皮和夏天也比较容易坚持用。"},
+
+    {cat:"makeup",sub:"底妆",tier:"lux",brand:"Dior",name:added("Forever Skin Glow Foundation"),price:"约¥8,500",note:"高级光泽底妆，适合想要精致但不厚重的奶油肌。"},
+    {cat:"makeup",sub:"遮瑕",tier:"lux",brand:"Cle de Peau Beaute",name:added("Concealer"),price:"约¥12,000",note:"贵价遮瑕代表，适合局部修饰黑眼圈、斑点和瑕疵。"},
+    {cat:"makeup",sub:"底妆",tier:"lux",brand:"Shiseido",name:added("RevitalEssence Skin Glow Foundation"),price:"约¥9,000",note:"日系养肤光泽粉底，和透明感主题很搭。"},
+    {cat:"makeup",sub:"底妆",tier:"lux",brand:"RMK",name:added("Liquid Foundation"),price:"约¥7,000",note:"日系轻薄底妆代表，适合保留皮肤纹理的自然妆感。"},
+    {cat:"makeup",sub:"唇",tier:"value",brand:"Rom&nd",name:added("Juicy Lasting Tint"),price:"约¥1,500",note:"韩系玻璃唇爆款，适合做清透、甜甜的日常唇色。"},
+    {cat:"makeup",sub:"唇",tier:"value",brand:"Laka",name:added("Fruity Glam Tint"),price:"约¥2,200",note:"水光感更明显，适合年轻、明亮、轻甜的唇妆。"},
+    {cat:"makeup",sub:"眼影",tier:"value",brand:"Dasique",name:added("Eyeshadow Palette"),price:"约¥3,500",note:"韩系柔雾眼影盘，颜色温柔，适合低饱和约会妆。"},
+    {cat:"makeup",sub:"唇",tier:"value",brand:"Amuse",name:added("Dew Tint"),price:"约¥2,300",note:"轻薄水润唇釉，适合自然血色和素颜妆。"},
+    {cat:"makeup",sub:"腮红",tier:"lux",brand:"Jill Stuart",name:added("Bloom Mix Blush"),price:"约¥5,800",note:"包装和颜色都很女性化，适合作为页面里的颜值亮点。"},
+    {cat:"makeup",sub:"定妆",tier:"lux",brand:"Decorte",name:added("Loose Powder"),price:"约¥6,500",note:"日系柔焦散粉，适合把妆面压成细腻的雾光感。"},
+
+    {cat:"hair",sub:"修护发膜",tier:"value",brand:"Shiseido Tsubaki",name:added("Premium Repair Hair Mask"),price:"≈¥1,200",note:"日本药妆发膜经典款，适合毛躁、干枯发尾的日常修护。"},
+    {cat:"hair",sub:"发油造型",tier:"value",brand:"& honey",name:added("Melty / Deep Moist Hair Oil"),price:"≈¥1,500",note:"甜美日系发油，适合做发尾光泽和柔顺感。"},
+    {cat:"hair",sub:"发油造型",tier:"lux",brand:"Milbon",name:added("Elujuda Hair Treatment"),price:"约¥4,000",note:"沙龙感日系免洗护发，适合精致、轻盈的发丝状态。"},
+    {cat:"hair",sub:"发油造型",tier:"value",brand:"Fino",name:added("Premium Touch Hair Oil"),price:"≈¥1,400",note:"和 Fino 发膜成套，适合预算友好的光泽发护理。"},
+    {cat:"hair",sub:"造型器",tier:"lux",brand:"ReFa",name:added("Beautech Dryer"),price:"约¥45,000",note:"日系高端吹风机，适合追求顺滑、蓬松和低热损伤。"},
+
+    {cat:"body",sub:"护手",tier:"value",brand:"Jill Stuart",name:added("Hand Cream"),price:"约¥2,500",note:"香香软软的护手霜，包装非常适合可爱女性化页面。"},
+    {cat:"body",sub:"身体乳",tier:"lux",brand:"Dior",name:added("Miss Dior Body Milk"),price:"约¥9,000",note:"香氛身体乳，适合把身体护理做成更有仪式感的一步。"},
+    {cat:"body",sub:"身体乳",tier:"lux",brand:"Laura Mercier",name:added("Ambre Vanille Body Cream"),price:"约¥8,000",note:"甜暖香草身体霜，适合秋冬和约会前护理。"},
+    {cat:"body",sub:"身体乳",tier:"value",brand:"Naturie",name:added("Hatomugi Skin Conditioner"),price:"≈¥900",note:"便宜大碗薏仁水，脸身湿敷都能用，适合日常补水。"},
+    {cat:"body",sub:"泡澡",tier:"value",brand:"Kneipp",name:added("Bath Salt"),price:"≈¥900",note:"日本药妆泡澡浴盐，适合放松、睡前和身体香气氛围。"},
+
+    {cat:"scent",sub:"香水",tier:"lux",brand:"Dior",name:added("Miss Dior Blooming Bouquet"),price:"约¥18,000",note:"清甜花香，女性感强，适合温柔明亮的日常印象。"},
+    {cat:"scent",sub:"香水",tier:"lux",brand:"Chanel",name:added("Chance Eau Tendre"),price:"约¥20,000",note:"温柔花果香，干净、柔软、不压人。"},
+    {cat:"scent",sub:"香水",tier:"lux",brand:"Jo Malone",name:added("English Pear & Freesia"),price:"约¥20,000",note:"梨与小苍兰，轻盈清新，适合通勤和约会。"},
+    {cat:"scent",sub:"香水",tier:"lux",brand:"Diptyque",name:added("Eau Rose"),price:"约¥24,000",note:"玫瑰感更明显，适合女性化、柔软、有记忆点的气味。"},
+    {cat:"scent",sub:"皂感清新",tier:"value",brand:"Maison Margiela",name:added("Lazy Sunday Morning"),price:"约¥16,200",note:"干净皂感和柔软床单气味，和透明感主题高度匹配。"},
+    {cat:"scent",sub:"香水",tier:"value",brand:"SHIRO",name:added("White Lily"),price:"≈¥4,000",note:"比皂感更柔一点的白花香，适合清淡女性气质。"},
+
+    {cat:"oral",sub:"牙膏/美白",tier:"value",brand:"Apagard",name:added("Premio Toothpaste"),price:"≈¥1,400",note:"日本美白牙膏代表，适合日常去渍和维持牙齿干净感。"},
+    {cat:"oral",sub:"牙膏/美白",tier:"value",brand:"Marvis",name:added("Whitening Mint"),price:"约¥1,800",note:"包装漂亮，适合浴室台面，也适合页面展示。"},
+    {cat:"oral",sub:"电动牙刷",tier:"lux",brand:"Philips Sonicare",name:added("DiamondClean"),price:"约¥35,000",note:"高端声波电动牙刷，适合口腔护理升级。"},
+    {cat:"oral",sub:"冲牙护理",tier:"value",brand:"Nonio",name:added("Mouthwash"),price:"≈¥700",note:"日本口气护理常见款，适合随手补齐清洁感。"},
+
+    {cat:"tools",sub:"微电流",tier:"lux",brand:"Panasonic",name:added("Ion Effector / Beauty Device"),price:"约¥35,000",note:"日系美容仪代表，适合导入、保湿和居家护理仪式感。"},
+    {cat:"tools",sub:"微电流",tier:"lux",brand:"Medicube",name:added("Age-R Booster Pro"),price:"约¥38,000",note:"韩系热门美容仪，一台覆盖多种居家护理场景。"},
+    {cat:"tools",sub:"微电流",tier:"lux",brand:"YA-MAN",name:added("Photo Plus"),price:"约¥55,000",note:"日本家用美容仪经典款，适合进阶护理。"},
+    {cat:"tools",sub:"按摩",tier:"value",brand:"ReFa",name:added("Heart Brush"),price:"≈¥2,500",note:"颜值很高的爱心梳，女性化和可爱感都很强。"},
+    {cat:"tools",sub:"按摩",tier:"value",brand:"Shiseido",name:added("Foundation Brush 131"),price:"≈¥2,000",note:"日系底妆刷经典，适合把底妆拍得更薄更服帖。"}
+  );
+
+  const style = document.createElement("style");
+  style.textContent = `
+    :root{--paper:#fff7f8;--paper-2:#fff0f3;--ink:#3d3035;--ink-soft:#8a6f78;--line:#f0d7de;--card:rgba(255,255,255,.88);--water:#d96f91;--water-bg:#ffe6ee;--slate:#b68a9a;--slate-bg:#f9e9ef;--gold:#c49a55;--gold-bg:#fff2d7;--shadow:0 10px 30px -22px rgba(165,75,105,.45),0 2px 10px rgba(165,75,105,.08)}
+    body{background:linear-gradient(180deg,rgba(255,247,248,.96),rgba(255,252,247,.98) 42%,rgba(247,252,248,.92)),radial-gradient(90% 55% at 10% -10%,rgba(255,221,232,.72),transparent 58%),radial-gradient(80% 55% at 96% 8%,rgba(232,246,238,.86),transparent 60%)}
+    header.hero{padding:66px 0 30px}.eyebrow{color:#d96f91;letter-spacing:.34em}h1.title{font-size:58px;color:#49353c;line-height:1.06;text-shadow:0 1px 0 #fff}h1.title .thin{color:#c47b93;font-weight:500}.lede{max-width:700px;color:#806974}.lede b{color:#bd5f80}.stats{border-top-color:#f0d7de;gap:14px}.stat{background:rgba(255,255,255,.68);border:1px solid #f2dbe2;border-radius:8px;padding:12px 16px;min-width:132px}.stat .n{color:#bd5f80}.stat .l{color:#9b7a86}
+    .controls{background:rgba(255,247,248,.84);border-color:#f0d7de;box-shadow:0 8px 28px -24px rgba(165,75,105,.45)}.search{border-color:#edcfd8;border-radius:8px;background:rgba(255,255,255,.92);box-shadow:inset 0 1px 0 #fff;color:#4b3840}.search::placeholder{color:#b99ba6}.search:focus{outline-color:#d96f91}.chip{border-color:#edcfd8;background:rgba(255,255,255,.7);color:#8b6774;box-shadow:0 1px 0 rgba(255,255,255,.8)}.chip:hover{border-color:#d96f91;color:#bd5f80;background:#fff}.chip[aria-pressed="true"]{background:#d96f91;border-color:#d96f91;color:#fff}.chip.tier[aria-pressed="true"]{background:#c49a55;border-color:#c49a55;color:#fff}.chip-label{color:#b99ba6}
+    main{padding-top:38px}.group-head{background:linear-gradient(90deg,rgba(255,229,237,.72),rgba(255,255,255,0));border-left:4px solid #e6a4b9;padding:12px 14px;border-radius:8px;margin-top:38px}.group-head h2{color:#573b46}.group-head .en,.sub-head .sc{color:#bd91a0}.group-head .ct{color:#9c7582}.sub-head{border-bottom-color:#f0d7de}.sub-head h3{color:#bd5f80}.sub-head .fn{color:#8d747d}.grid{gap:18px}.card{border-color:#f0d7de;border-radius:8px;background:rgba(255,255,255,.9);box-shadow:var(--shadow)}.card:hover{border-color:#e6a4b9;transform:translateY(-2px)}
+    .thumb{background:linear-gradient(135deg,#fff 0%,#ffe8f0 52%,#f3fbf6 100%);border-bottom-color:#f0d7de}.thumb img{filter:saturate(1.04) contrast(.98)}.mono{background:linear-gradient(135deg,rgba(217,111,145,.42),rgba(196,154,85,.28));border-color:rgba(255,255,255,.72)}.ph-tag{color:#bd91a0}.brand{color:#b06f84}.name{color:#4a343d}.note{color:#806974}.price{color:#9d5f75}.badge.core{background:#ffe3ec;color:#a64c6b}.badge.value{background:#f6e9ef;color:#8c6070}.badge.lux{background:#fff0cd;color:#9a6d25}.buy{border-color:#edcfd8;background:rgba(255,247,249,.76);color:#a56b7f}.buy:hover{border-color:#d96f91;color:#bd5f80;background:#fff}.card.bought .buy{background:#ffe3ec;color:#a64c6b;border-color:#d96f91}
+    footer{border-top-color:#f0d7de}footer .note-box{border-color:#f0d7de;border-radius:8px;background:rgba(255,255,255,.78);color:#806974}footer .sign{color:#bd5f80}@media (max-width:600px){h1.title{font-size:38px}.stat{min-width:calc(50% - 8px);padding:10px 12px}.grid{gap:12px}}
+  `;
+  document.head.appendChild(style);
+
+  document.querySelector(".eyebrow").textContent = "Soft Glow Beauty Diary";
+  document.querySelector(".title").innerHTML = "甜美透明感清单<br><span class=\"thin\">Beauty Wish List</span>";
+  document.querySelector(".lede").innerHTML = "一份更柔软、更甜一点的变美清单：从<b>清透底子</b>、<b>奶油光泽妆</b>到<b>香香的身体护理</b>，把每天会用到的小东西整理成可以慢慢勾选的美丽愿望单。";
+  document.querySelector("footer .note-box").innerHTML = "<b>今日新增</b>：2026-06-30 已补入一批日系、韩系和轻奢美妆护理单品；所有新产品名后都标了新增日期，方便你以后筛选和调整。";
+  document.querySelector("footer .sign").textContent = "慢慢变漂亮，也是一种很温柔的自我照顾。";
+};

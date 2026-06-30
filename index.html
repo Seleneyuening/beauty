@@ -108,6 +108,12 @@
   .group-head .en{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#9AA6A1;}
   .group-head .ct{margin-left:auto;font-size:12px;color:var(--ink-soft);}
 
+  /* ---------- 细类小标题 ---------- */
+  .sub-head{display:flex;align-items:baseline;gap:10px;margin:26px 0 13px;padding-bottom:7px;border-bottom:1px solid var(--line);}
+  .sub-head h3{font-family:"Noto Serif SC",serif;font-weight:600;font-size:15px;margin:0;color:var(--ink);letter-spacing:.02em;white-space:nowrap;}
+  .sub-head .fn{font-size:12px;color:var(--ink-soft);font-weight:300;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .sub-head .sc{margin-left:auto;font-size:11px;color:#9AA6A1;white-space:nowrap;}
+
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:16px;}
 
   .card{
@@ -185,6 +191,8 @@
     .body{padding:12px;}
     .note{font-size:11.5px;}
     .group-head h2{font-size:21px;}
+    .sub-head .fn{display:none;}
+    .sub-head h3{font-size:14px;}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
@@ -251,121 +259,180 @@ const TIERS = {
   lux:   {zh:"奢华天花板", cls:"lux"},
 };
 
+/* 细类分组：每个大类下的功能小类 + 一句功能说明 */
+const SUBS = {
+  skincare:[
+    {id:"防晒",fn:"紫外线防护 · 抗老第一杠杆"},
+    {id:"卸妆",fn:"溶解防晒彩妆，温和卸净"},
+    {id:"洁面",fn:"清洁不拉干，养出干净底子"},
+    {id:"化妆水",fn:"补水打底，后续更好吸收"},
+    {id:"精华",fn:"针对性提亮 / 抗老 / 控油"},
+    {id:"眼部",fn:"淡化黑眼圈与细纹"},
+    {id:"乳液/面霜",fn:"锁水修护，稳住屏障"},
+    {id:"痘痘",fn:"急救与日常痘肌护理"},
+    {id:"面膜",fn:"集中补水 / 镇定 / 急救"},
+    {id:"唇部",fn:"滋润防干，唇色更好看"},
+  ],
+  makeup:[
+    {id:"底妆",fn:"均匀肤色，做透明感底子"},
+    {id:"遮瑕",fn:"局部遮黑眼圈 / 痘印"},
+    {id:"妆前",fn:"控油校色，延长持妆"},
+    {id:"定妆",fn:"柔焦定妆，减少脱妆"},
+    {id:"眉",fn:"勾勒眉形，大人感关键"},
+    {id:"眼影",fn:"自然渐层，显高级"},
+    {id:"眼线",fn:"放大眼神，温柔不凶"},
+    {id:"睫毛",fn:"卷翘纤长（含睫毛夹与打底）"},
+    {id:"腮红",fn:"自然血色，提气色"},
+    {id:"高光",fn:"点亮轮廓，做水光感"},
+    {id:"唇",fn:"自然血色 / 裸唇感"},
+  ],
+  hair:[
+    {id:"洗护",fn:"日常清洁与柔顺"},
+    {id:"修护发膜",fn:"修复染烫与热损伤"},
+    {id:"发油造型",fn:"光泽顺滑，做发丝感"},
+    {id:"造型器",fn:"低损伤吹卷造型"},
+  ],
+  body:[
+    {id:"沐浴",fn:"清洁留香，提清洁感"},
+    {id:"身体乳",fn:"保湿嫩肤，护理肤质"},
+    {id:"磨砂",fn:"去角质，让身体透亮"},
+    {id:"护手",fn:"滋润防干，留香"},
+  ],
+  scent:[
+    {id:"香水",fn:"标志气味，个人名片"},
+    {id:"皂感清新",fn:"干净皂感，日系透明感"},
+  ],
+  oral:[
+    {id:"电动牙刷",fn:"高效清除牙菌斑"},
+    {id:"牙膏/美白",fn:"去渍亮白，日常美白"},
+    {id:"冲牙护理",fn:"清牙缝，护牙龈"},
+  ],
+  tools:[
+    {id:"光疗面罩",fn:"红 / 蓝光居家护肤"},
+    {id:"微电流",fn:"轮廓提拉紧致"},
+    {id:"按摩",fn:"面部循环按摩"},
+  ],
+  inner:[
+    {id:"美白",fn:"口服辅助，证据参差"},
+    {id:"美容补充",fn:"胶原 / 生物素等"},
+  ],
+};
+
 const PRODUCTS = [
   // —— 护肤 ——
-  {cat:"skincare",tier:"core",brand:"Anessa",name:"Perfect UV 防晒",price:"≈¥3,000",note:"J-beauty 防晒标杆，抗汗抗水、肤感好。抗老第一杠杆。",img:"https://murasakicosmetics.com/cdn/shop/products/Anessa-Sunscreen-Milk-Spf50.jpg?v=1655670181"},
-  {cat:"skincare",tier:"value",brand:"Skin Aqua",name:"水活防晒精华",price:"≈¥800",note:"平价好用，你已在用，日常足够。",img:"https://murasakicosmetics.com/cdn/shop/products/Skin-Aqua-Tone-Up-tube.jpg?v=1614508560"},
-  {cat:"skincare",tier:"lux",brand:"La Roche-Posay",name:"Anthelios UVMune 400",price:"约¥6,500",note:"含 Mexoryl 400，UVA 防护全球最高梯队、无白雾。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/La-Roche-Posay-Anthelios-UVmune-400-Invisible-Fluid-SPF-50.jpg?v=1641982181"},
-  {cat:"skincare",tier:"value",brand:"Beauty of Joseon",name:"Relief Sun 防晒",price:"约¥2,900",note:"K-beauty 性价比之王，肤感像乳液。",img:"https://koreanskincare.com/cdn/shop/files/boj_reliefsun.webp?v=1690402369"},
-  {cat:"skincare",tier:"core",brand:"Melano CC",name:"维C 美容液",price:"¥1,210",note:"便宜、提亮、淡痘印，混合皮友好，密封不易氧化。",img:"https://murasakicosmetics.com/cdn/shop/files/melano-CC-essence-new-packaging_1200x1200.jpg?v=1770554042"},
-  {cat:"skincare",tier:"lux",brand:"SkinCeuticals",name:"C E Ferulic 维C精华",price:"约¥27,500",note:"维C 黄金标准，临床证据最多。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/files/CEF-1.png?v=1773134867"},
-  {cat:"skincare",tier:"value",brand:"Timeless",name:"20% Vitamin C+E+阿魏酸",price:"约¥4,100",note:"配方思路接近大牌的平价替代。",img:"https://cdn.shopify.com/s/files/1/1670/9243/files/CEF20_MAIN_IMAGE_BADGE_f892dbc8-e18b-4df8-be97-b1235567c04c.png?v=1778342705"},
-  {cat:"skincare",tier:"value",brand:"The Ordinary",name:"Niacinamide 10% + Zinc",price:"约¥1,100",note:"控油、收毛孔、匀肤色。混合皮命定成分。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/files/The-Ordinary-Niacinamide-10_-_-Zinc-1_-30ml.jpg?v=1739976033"},
-  {cat:"skincare",tier:"value",brand:"The INKEY List",name:"Niacinamide 10%",price:"约¥1,600",note:"更温和的烟酰胺，肤感润不刺激。",img:"https://cdn.shopify.com/s/files/1/0428/8498/9091/files/TheINKEYList_NiacinamideSerum_30mlbottle_1000x1000_5c1f85db-53c9-48cd-975e-e70371e617a1.png?v=1700586730"},
-  {cat:"skincare",tier:"core",brand:"CeraVe",name:"抗皱视黄醇精华",price:"约¥4,100",note:"包裹型 A 醇+神经酰胺，最不翻车的入门款。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/CeraVe-Resurfacing-Retinol-Serum.jpg?v=1659621298"},
-  {cat:"skincare",tier:"lux",brand:"Medik8",name:"Crystal Retinal",price:"约¥11,300",note:"醛式 A 醇，温和高效，进阶抗老。",img:"https://scdn.speedsize.com/fd01c063-4aa1-453d-b317-e8f709b2bfe7/us.medik8.com/cdn/shop/files/20260217_-_Crystal_Retinal_24_-_PDP_-_Crystal_Retinal_1_-_Packshot_-_US.png?v=1772044240&width=1024"},
-  {cat:"skincare",tier:"core",brand:"Paula's Choice",name:"2% BHA 水杨酸精华",price:"约¥5,700",note:"清毛孔、去角质、改善黑头的全球标杆。",img:"https://static.thcdn.com/productimg/original/11174178-1625306470592034.jpg"},
-  {cat:"skincare",tier:"core",brand:"Curél",name:"潤浸保湿 洁面",price:"≈¥900",note:"氨基酸系温和洁面，敏感肌友好，不拉干。",img:"https://murasakicosmetics.com/cdn/shop/files/CurelIntensiveMoistureCareFoamingFacialWash.jpg?v=1733052695"},
-  {cat:"skincare",tier:"value",brand:"La Roche-Posay",name:"Toleriane 洁面",price:"约¥2,400",note:"皮肤科常推的温和洁面。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/La-Roche-Posay-Toleriane-Dermo-Cleanser-400ml.jpg?v=1655200598"},
-  {cat:"skincare",tier:"core",brand:"肌ラボ",name:"白潤プレミアム 化粧水",price:"≈¥900",note:"补水+传明酸提亮，日系透明感地基。",img:"https://murasakicosmetics.com/cdn/shop/products/Shirojyun-NEW-lotion.jpg?v=1620384725"},
-  {cat:"skincare",tier:"core",brand:"CeraVe",name:"PM 乳液",price:"约¥2,600",note:"混合皮成功率最高的一支：控油+修护一步到位。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/8141.jpg?v=1695202888"},
-  {cat:"skincare",tier:"value",brand:"La Roche-Posay",name:"Toleriane Double Repair",price:"约¥3,200",note:"神经酰胺+烟酰胺，敏感混合皮稳妥款。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/11550.jpg?v=1695996303"},
-  {cat:"skincare",tier:"lux",brand:"Tatcha",name:"The Water Cream",price:"约¥11,300",note:"日系配方，清爽水光，混合皮的贵价天花板。",img:"https://tatcha.com/cdn/shop/files/WaterCream-pdp-FullSize-MainImage-1200x1200_c9ae41c1-e15c-46cc-b688-b120e45b0869.jpg?v=1766157498&width=2048"},
-  {cat:"skincare",tier:"core",brand:"DHC",name:"深层卸妆油",price:"≈¥1,500",note:"天天防晒上妆必须卸干净，橄榄油基底、经典平价。",img:"https://murasakicosmetics.com/cdn/shop/products/Deep-Cleansing-Oil-Texture.jpg?v=1653593920"},
-  {cat:"skincare",tier:"value",brand:"FANCL",name:"Mild 卸妆油",price:"≈¥1,800",note:"无防腐剂无香料，敏感肌最稳。",img:"https://murasakicosmetics.com/cdn/shop/products/Fancl-Mild-Oil-packaging_1200x1200.jpg?v=1624884677"},
-  {cat:"skincare",tier:"lux",brand:"Shu Uemura",name:"Ultime8 卸妆油",price:"≈¥15,400",note:"山茶油基底，奢华顺滑。",img:"https://japanesetaste.com/cdn/shop/files/Shu-Uemura-Ultime8-Sublime-Cleansing-Oil-450ml-1-2024-07-11T03_15_21.229Z.jpg?crop=center&height=1200&v=1746161338&width=1200"},
-  {cat:"skincare",tier:"value",brand:"Suisai",name:"酵素洗顔粉",price:"≈¥1,800",note:"单次小包，溶解角质黑头，做透明感的秘密武器。",img:"https://murasakicosmetics.com/cdn/shop/files/SuisaiBeautyClearPowderWash.jpg?v=1763472273"},
-  {cat:"skincare",tier:"value",brand:"Lululun",name:"每日面膜",price:"≈¥60/片",note:"日常补水提亮，温和无酒精，天天敷。",img:"https://murasakicosmetics.com/cdn/shop/products/Lululun-Pure-Balance-Pink.jpg?v=1663612924"},
-  {cat:"skincare",tier:"value",brand:"美迪惠尔 Mediheal",name:"针对性精华面膜",price:"≈¥200/片",note:"按诉求选系列（控痘/美白/弹力），精华更浓。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/Mediheal-Madecassoside-Essential-Mask.jpg?v=1756218510"},
-  {cat:"skincare",tier:"lux",brand:"La Roche-Posay",name:"Cicaplast B5 修复面膜",price:"≈¥300/片",note:"泛红、晒后、刷酸后的急救镇定面膜。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/3c48f4344c4f7dc80c6ab03aadbef6e9.jpg?v=1695916003"},
-  {cat:"skincare",tier:"value",brand:"Laneige",name:"睡眠唇膜",price:"约¥3,900",note:"全球唇膜天花板，晚上厚敷、唇部柔软有血色。",img:"https://sentisenti.com/cdn/shop/products/laneige-lip-sleeping-pack-ex-berry-main-oo35mm.jpg?v=1762457741&width=1280"},
-  {cat:"skincare",tier:"value",brand:"Bifesta",name:"眼唇卸妆液",price:"≈¥900",note:"眼唇专用胶束水，温和快速卸浓妆，敏感眼周友好。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Mandom-Bifesta-Micellar-Water-Eye-and-Lip-Makeup-Remover-145ml-1-2025-09-02T05_13_10.492Z.jpg?v=1756790048"},
-  {cat:"skincare",tier:"value",brand:"DHC",name:"药用润唇膏",price:"≈¥700",note:"橄榄系经典润唇膏，滋润不黏，日常护唇标配。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/DHC-Hydrating-Lip-Cream-1-5g-1-2024-02-08T01_35_56.663Z.jpg?v=1743426489"},
-  {cat:"skincare",tier:"value",brand:"The Ordinary",name:"咖啡因眼部精华 5%",price:"约¥1,300",note:"平价去黑眼圈/浮肿，眼周提亮入门首选。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/files/The-Ordinary-Caffeine-Solution-5_-_-EGCG-30ml.jpg?v=1739972759"},
-  {cat:"skincare",tier:"value",brand:"COSRX",name:"蜗牛 96 黏液精华",price:"约¥2,800",note:"K-beauty 修护标配，补水稳屏障，性价比高。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/COSRX-Advanced-Snail-96-Mucin-Power-Essence-Product.jpg?v=1753227743"},
-  {cat:"skincare",tier:"value",brand:"The Ordinary",name:"玻尿酸 2% + B5",price:"约¥1,500",note:"多重玻尿酸补水打底，便宜大碗、油皮也清爽。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/files/The-Ordinary-Hyaluronic-Acid-2_-_-B5-V2-Next-Gen-30ml.jpg?v=1739973465"},
-  {cat:"skincare",tier:"value",brand:"COSRX",name:"痘痘贴",price:"约¥800",note:"急救痘痘、吸脓防抠，平价人手一盒。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/COSRX-Acne-Pimple-Master-Patch-Product.jpg?v=1753653167"},
-  {cat:"skincare",tier:"value",brand:"Bioderma",name:"Sensibio 舒缓卸妆水",price:"约¥2,400",note:"全脸温和胶束水，敏感肌最稳，配眼唇卸更干净。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/files/GetAttachmentThumbnail_2_471f00fd-b243-4429-926a-b1be46db0c28.jpg?v=1734452567"},
+  {cat:"skincare",sub:"防晒",tier:"core",brand:"Anessa",name:"Perfect UV 防晒",price:"≈¥3,000",note:"J-beauty 防晒标杆，抗汗抗水、肤感好。抗老第一杠杆。",img:"https://murasakicosmetics.com/cdn/shop/products/Anessa-Sunscreen-Milk-Spf50.jpg?v=1655670181"},
+  {cat:"skincare",sub:"防晒",tier:"value",brand:"Skin Aqua",name:"水活防晒精华",price:"≈¥800",note:"平价好用，你已在用，日常足够。",img:"https://murasakicosmetics.com/cdn/shop/products/Skin-Aqua-Tone-Up-tube.jpg?v=1614508560"},
+  {cat:"skincare",sub:"防晒",tier:"lux",brand:"La Roche-Posay",name:"Anthelios UVMune 400",price:"约¥6,500",note:"含 Mexoryl 400，UVA 防护全球最高梯队、无白雾。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/La-Roche-Posay-Anthelios-UVmune-400-Invisible-Fluid-SPF-50.jpg?v=1641982181"},
+  {cat:"skincare",sub:"防晒",tier:"value",brand:"Beauty of Joseon",name:"Relief Sun 防晒",price:"约¥2,900",note:"K-beauty 性价比之王，肤感像乳液。",img:"https://koreanskincare.com/cdn/shop/files/boj_reliefsun.webp?v=1690402369"},
+  {cat:"skincare",sub:"精华",tier:"core",brand:"Melano CC",name:"维C 美容液",price:"¥1,210",note:"便宜、提亮、淡痘印，混合皮友好，密封不易氧化。",img:"https://murasakicosmetics.com/cdn/shop/files/melano-CC-essence-new-packaging_1200x1200.jpg?v=1770554042"},
+  {cat:"skincare",sub:"精华",tier:"lux",brand:"SkinCeuticals",name:"C E Ferulic 维C精华",price:"约¥27,500",note:"维C 黄金标准，临床证据最多。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/files/CEF-1.png?v=1773134867"},
+  {cat:"skincare",sub:"精华",tier:"value",brand:"Timeless",name:"20% Vitamin C+E+阿魏酸",price:"约¥4,100",note:"配方思路接近大牌的平价替代。",img:"https://cdn.shopify.com/s/files/1/1670/9243/files/CEF20_MAIN_IMAGE_BADGE_f892dbc8-e18b-4df8-be97-b1235567c04c.png?v=1778342705"},
+  {cat:"skincare",sub:"精华",tier:"value",brand:"The Ordinary",name:"Niacinamide 10% + Zinc",price:"约¥1,100",note:"控油、收毛孔、匀肤色。混合皮命定成分。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/files/The-Ordinary-Niacinamide-10_-_-Zinc-1_-30ml.jpg?v=1739976033"},
+  {cat:"skincare",sub:"精华",tier:"value",brand:"The INKEY List",name:"Niacinamide 10%",price:"约¥1,600",note:"更温和的烟酰胺，肤感润不刺激。",img:"https://cdn.shopify.com/s/files/1/0428/8498/9091/files/TheINKEYList_NiacinamideSerum_30mlbottle_1000x1000_5c1f85db-53c9-48cd-975e-e70371e617a1.png?v=1700586730"},
+  {cat:"skincare",sub:"精华",tier:"core",brand:"CeraVe",name:"抗皱视黄醇精华",price:"约¥4,100",note:"包裹型 A 醇+神经酰胺，最不翻车的入门款。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/CeraVe-Resurfacing-Retinol-Serum.jpg?v=1659621298"},
+  {cat:"skincare",sub:"精华",tier:"lux",brand:"Medik8",name:"Crystal Retinal",price:"约¥11,300",note:"醛式 A 醇，温和高效，进阶抗老。",img:"https://scdn.speedsize.com/fd01c063-4aa1-453d-b317-e8f709b2bfe7/us.medik8.com/cdn/shop/files/20260217_-_Crystal_Retinal_24_-_PDP_-_Crystal_Retinal_1_-_Packshot_-_US.png?v=1772044240&width=1024"},
+  {cat:"skincare",sub:"精华",tier:"core",brand:"Paula's Choice",name:"2% BHA 水杨酸精华",price:"约¥5,700",note:"清毛孔、去角质、改善黑头的全球标杆。",img:"https://static.thcdn.com/productimg/original/11174178-1625306470592034.jpg"},
+  {cat:"skincare",sub:"洁面",tier:"core",brand:"Curél",name:"潤浸保湿 洁面",price:"≈¥900",note:"氨基酸系温和洁面，敏感肌友好，不拉干。",img:"https://murasakicosmetics.com/cdn/shop/files/CurelIntensiveMoistureCareFoamingFacialWash.jpg?v=1733052695"},
+  {cat:"skincare",sub:"洁面",tier:"value",brand:"La Roche-Posay",name:"Toleriane 洁面",price:"约¥2,400",note:"皮肤科常推的温和洁面。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/La-Roche-Posay-Toleriane-Dermo-Cleanser-400ml.jpg?v=1655200598"},
+  {cat:"skincare",sub:"化妆水",tier:"core",brand:"肌ラボ",name:"白潤プレミアム 化粧水",price:"≈¥900",note:"补水+传明酸提亮，日系透明感地基。",img:"https://murasakicosmetics.com/cdn/shop/products/Shirojyun-NEW-lotion.jpg?v=1620384725"},
+  {cat:"skincare",sub:"乳液/面霜",tier:"core",brand:"CeraVe",name:"PM 乳液",price:"约¥2,600",note:"混合皮成功率最高的一支：控油+修护一步到位。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/8141.jpg?v=1695202888"},
+  {cat:"skincare",sub:"乳液/面霜",tier:"value",brand:"La Roche-Posay",name:"Toleriane Double Repair",price:"约¥3,200",note:"神经酰胺+烟酰胺，敏感混合皮稳妥款。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/11550.jpg?v=1695996303"},
+  {cat:"skincare",sub:"乳液/面霜",tier:"lux",brand:"Tatcha",name:"The Water Cream",price:"约¥11,300",note:"日系配方，清爽水光，混合皮的贵价天花板。",img:"https://tatcha.com/cdn/shop/files/WaterCream-pdp-FullSize-MainImage-1200x1200_c9ae41c1-e15c-46cc-b688-b120e45b0869.jpg?v=1766157498&width=2048"},
+  {cat:"skincare",sub:"卸妆",tier:"core",brand:"DHC",name:"深层卸妆油",price:"≈¥1,500",note:"天天防晒上妆必须卸干净，橄榄油基底、经典平价。",img:"https://murasakicosmetics.com/cdn/shop/products/Deep-Cleansing-Oil-Texture.jpg?v=1653593920"},
+  {cat:"skincare",sub:"卸妆",tier:"value",brand:"FANCL",name:"Mild 卸妆油",price:"≈¥1,800",note:"无防腐剂无香料，敏感肌最稳。",img:"https://murasakicosmetics.com/cdn/shop/products/Fancl-Mild-Oil-packaging_1200x1200.jpg?v=1624884677"},
+  {cat:"skincare",sub:"卸妆",tier:"lux",brand:"Shu Uemura",name:"Ultime8 卸妆油",price:"≈¥15,400",note:"山茶油基底，奢华顺滑。",img:"https://japanesetaste.com/cdn/shop/files/Shu-Uemura-Ultime8-Sublime-Cleansing-Oil-450ml-1-2024-07-11T03_15_21.229Z.jpg?crop=center&height=1200&v=1746161338&width=1200"},
+  {cat:"skincare",sub:"洁面",tier:"value",brand:"Suisai",name:"酵素洗顔粉",price:"≈¥1,800",note:"单次小包，溶解角质黑头，做透明感的秘密武器。",img:"https://murasakicosmetics.com/cdn/shop/files/SuisaiBeautyClearPowderWash.jpg?v=1763472273"},
+  {cat:"skincare",sub:"面膜",tier:"value",brand:"Lululun",name:"每日面膜",price:"≈¥60/片",note:"日常补水提亮，温和无酒精，天天敷。",img:"https://murasakicosmetics.com/cdn/shop/products/Lululun-Pure-Balance-Pink.jpg?v=1663612924"},
+  {cat:"skincare",sub:"面膜",tier:"value",brand:"美迪惠尔 Mediheal",name:"针对性精华面膜",price:"≈¥200/片",note:"按诉求选系列（控痘/美白/弹力），精华更浓。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/Mediheal-Madecassoside-Essential-Mask.jpg?v=1756218510"},
+  {cat:"skincare",sub:"面膜",tier:"lux",brand:"La Roche-Posay",name:"Cicaplast B5 修复面膜",price:"≈¥300/片",note:"泛红、晒后、刷酸后的急救镇定面膜。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/3c48f4344c4f7dc80c6ab03aadbef6e9.jpg?v=1695916003"},
+  {cat:"skincare",sub:"唇部",tier:"value",brand:"Laneige",name:"睡眠唇膜",price:"约¥3,900",note:"全球唇膜天花板，晚上厚敷、唇部柔软有血色。",img:"https://sentisenti.com/cdn/shop/products/laneige-lip-sleeping-pack-ex-berry-main-oo35mm.jpg?v=1762457741&width=1280"},
+  {cat:"skincare",sub:"卸妆",tier:"value",brand:"Bifesta",name:"眼唇卸妆液",price:"≈¥900",note:"眼唇专用胶束水，温和快速卸浓妆，敏感眼周友好。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Mandom-Bifesta-Micellar-Water-Eye-and-Lip-Makeup-Remover-145ml-1-2025-09-02T05_13_10.492Z.jpg?v=1756790048"},
+  {cat:"skincare",sub:"唇部",tier:"value",brand:"DHC",name:"药用润唇膏",price:"≈¥700",note:"橄榄系经典润唇膏，滋润不黏，日常护唇标配。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/DHC-Hydrating-Lip-Cream-1-5g-1-2024-02-08T01_35_56.663Z.jpg?v=1743426489"},
+  {cat:"skincare",sub:"眼部",tier:"value",brand:"The Ordinary",name:"咖啡因眼部精华 5%",price:"约¥1,300",note:"平价去黑眼圈/浮肿，眼周提亮入门首选。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/files/The-Ordinary-Caffeine-Solution-5_-_-EGCG-30ml.jpg?v=1739972759"},
+  {cat:"skincare",sub:"精华",tier:"value",brand:"COSRX",name:"蜗牛 96 黏液精华",price:"约¥2,800",note:"K-beauty 修护标配，补水稳屏障，性价比高。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/COSRX-Advanced-Snail-96-Mucin-Power-Essence-Product.jpg?v=1753227743"},
+  {cat:"skincare",sub:"精华",tier:"value",brand:"The Ordinary",name:"玻尿酸 2% + B5",price:"约¥1,500",note:"多重玻尿酸补水打底，便宜大碗、油皮也清爽。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/files/The-Ordinary-Hyaluronic-Acid-2_-_-B5-V2-Next-Gen-30ml.jpg?v=1739973465"},
+  {cat:"skincare",sub:"痘痘",tier:"value",brand:"COSRX",name:"痘痘贴",price:"约¥800",note:"急救痘痘、吸脓防抠，平价人手一盒。",img:"https://cdn.shopify.com/s/files/1/0249/1218/files/COSRX-Acne-Pimple-Master-Patch-Product.jpg?v=1753653167"},
+  {cat:"skincare",sub:"卸妆",tier:"value",brand:"Bioderma",name:"Sensibio 舒缓卸妆水",price:"约¥2,400",note:"全脸温和胶束水，敏感肌最稳，配眼唇卸更干净。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/files/GetAttachmentThumbnail_2_471f00fd-b243-4429-926a-b1be46db0c28.jpg?v=1734452567"},
 
   // —— 彩妆 ——
-  {cat:"makeup",tier:"lux",brand:"Armani",name:"Luminous Silk 粉底",price:"约¥11,200",note:"奢妆粉底标杆，中等遮瑕+高级光泽。",img:"https://maisonbeautique.com/cdn/shop/files/3360372075554_main.jpg?v=1716605050"},
-  {cat:"makeup",tier:"lux",brand:"Charlotte Tilbury",name:"Hollywood Flawless Filter",price:"约¥7,900",note:"妆前/底妆二合一，做水光肌。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-4Medium-5060332329526-1.jpg?v=1771604763"},
-  {cat:"makeup",tier:"lux",brand:"NARS",name:"Radiant Creamy 遮瑕",price:"约¥5,200",note:"化妆师包里的常青遮瑕。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-CafeconLecheL26-607845012252-1.jpg?v=1774906710"},
-  {cat:"makeup",tier:"value",brand:"キャンメイク Canmake",name:"卡拉混合遮瑕",price:"≈¥825",note:"局部遮黑眼圈/痘印，平价好用。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-CAN-CC-LB-01-Canmake_Color_Mixing_Concealer_Light_Beige_SPF50_3.jpg?v=1746159236"},
-  {cat:"makeup",tier:"value",brand:"セザンヌ Cezanne",name:"超細芯眉笔",price:"¥550",note:"0.8mm 极细芯，画平直眉，大人感关键。"},
-  {cat:"makeup",tier:"lux",brand:"Anastasia",name:"Brow Wiz 眉笔",price:"约¥4,100",note:"细芯眉笔标杆。",img:"https://cdn.shopify.com/s/files/1/0751/0219/1907/products/abh_brow_wiz_Dark-Brown_0e14ce72-89da-4e74-a73d-3164aa70d2cf.jpg?v=1744915732"},
-  {cat:"makeup",tier:"value",brand:"excel",name:"スキニーリッチシャドウ",price:"≈¥1,650",note:"4 色棕调自然渐层，大人感名品。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Excel-Skinny-Rich-Shadow-Eyeshadow-1-2024-08-07T07_19_19.650Z.jpg?v=1746155060"},
-  {cat:"makeup",tier:"lux",brand:"SUQQU",name:"晶采七色眼影",price:"≈¥7,700",note:"日系眼影天花板，自然显高级。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/suqqu-signature-color-eyes-952975.png?v=1688732520"},
-  {cat:"makeup",tier:"value",brand:"セザンヌ Cezanne",name:"ナチュラルチーク 腮红",price:"¥396",note:"自然血色、提气色，超便宜好用。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/cezanne-natural-cheek-n-339186.png?v=1688730671"},
-  {cat:"makeup",tier:"lux",brand:"SUQQU",name:"纯色腮红",price:"≈¥6,600",note:"最懂「自然透出的血色」的日本顶奢。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/500120-BCB01-01.jpg?v=1720167791"},
-  {cat:"makeup",tier:"value",brand:"セザンヌ Cezanne",name:"高光",price:"¥693",note:"鼻梁颧骨轻扫，做日系水光感。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Cezanne-Pearl-Glow-Highlighter-With-Brush-2-4g-1-2025-08-14T03_57_22.966Z.png?v=1755159956"},
-  {cat:"makeup",tier:"value",brand:"キャンメイク Canmake",name:"棉花糖定妆蜜粉",price:"≈¥1,034",note:"控油持妆、柔焦毛孔。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Canmake-Marshmallow-Finish-Powder-Foundation-SPF50-1-2024-09-23T23_26_11.316Z.jpg?v=1746155151"},
-  {cat:"makeup",tier:"value",brand:"セザンヌ Cezanne",name:"皮脂テカリ防止下地",price:"≈¥720",note:"只上 T 区，压油延长持妆。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-CEZ-UVM-BS-30-Cezanne_Make_Keep_Base_UV_30ml.jpg?v=1746159497"},
-  {cat:"makeup",tier:"lux",brand:"NARS",name:"Climax 睫毛膏",price:"约¥4,200",note:"浓密不结块，化妆师常青款。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/global_images-607845070085-1.jpg?v=1774906646"},
-  {cat:"makeup",tier:"value",brand:"Maybelline",name:"Sky High 睫毛膏",price:"约¥2,100",note:"开架睫毛神物，纤长不晕。",img:"https://static.beautytocare.com/cdn-cgi/image/f=auto/media/catalog/product/m/a/maybelline-lash-sensational-sky-high-mascara-01-very-black-7-2ml.jpg"},
-  {cat:"makeup",tier:"lux",brand:"Charlotte Tilbury",name:"Pillow Talk 口红+唇线",price:"约¥5,700",note:"几乎是「自然裸唇」的代名词。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-PillowTalkFair-5056446634243-47.jpg?v=1769555487"},
-  {cat:"makeup",tier:"value",brand:"オペラ OPERA",name:"リップティント 唇釉",price:"≈¥1,650",note:"玫瑰豆沙渐层咬唇，自然血色。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Opera_Lip_Tint_N_05_01.jpg?v=1770940899"},
-  {cat:"makeup",tier:"value",brand:"ケイト KATE",name:"リップモンスター",price:"≈¥1,540",note:"保湿带色、持久，日常百搭。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Kate_Lip_Monster_01.jpg?v=1772334654"},
-  {cat:"makeup",tier:"lux",brand:"NARS",name:"Light Reflecting 散粉",price:"约¥6,500",note:"柔焦定妆、奶油肌光泽，不显假面、不卡纹。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-Crystal-194251075945-1.jpg?v=1774905878"},
-  {cat:"makeup",tier:"value",brand:"キャンメイク Canmake",name:"Glow Fleur 花瓣腮红",price:"≈¥715",note:"花瓣拼盘腮红，自然好推、显气色，平价常青。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/CanmakeGlowFleurCheeks11.jpg?v=1713184320"},
-  {cat:"makeup",tier:"value",brand:"ケイト KATE",name:"Designing 三色眉粉",price:"≈¥1,200",note:"三色立体眉粉，自然渐层、新手友好。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Kate_Designing_Eyebrow_3D_ex4_01.jpg?v=1772758699"},
-  {cat:"makeup",tier:"value",brand:"Love Liner",name:"液体眼线笔 棕色",price:"≈¥1,650",note:"极细水笔，棕色温柔显色、持久不晕染。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/MSH_Love_Liner_Liquid_Eyeliner_R5_Brown.jpg?v=1770741282"},
-  {cat:"makeup",tier:"value",brand:"Heroine Make",name:"Long & Curl 睫毛膏",price:"≈¥1,200",note:"防水纤长定型，泪汪汪也不晕，开架睫毛常胜款。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/isehan-japan-kiss-me-heroine-make-mascara-advanced-film-624629.jpg?v=1688731767"},
-  {cat:"makeup",tier:"value",brand:"キャンメイク Canmake",name:"Quick Lash Curler 睫毛打底",price:"≈¥760",note:"卷翘定型打底，叠在睫毛膏前更持久不塌。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/canmake-quick-lash-curler-166923.jpg?v=1688730524"},
-  {cat:"makeup",tier:"value",brand:"Shiseido 资生堂",name:"213 睫毛夹",price:"≈¥1,100",note:"传奇睫毛夹，贴合亚洲眼型、卷翘自然，几乎人手一只。",img:"https://cdn.shopify.com/s/files/1/0231/1294/1648/products/SHI2b.jpg?v=1756979612"},
-  {cat:"makeup",tier:"value",brand:"TIRTIR",name:"Mask Fit 红气垫",price:"约¥4,100",note:"高遮瑕持妆气垫，色号全、不卡粉，平价底妆爆款。",img:"https://cdn.shopify.com/s/files/1/0663/2757/6795/files/Group_596.png?v=1780882591"},
-  {cat:"makeup",tier:"value",brand:"キャンメイク Canmake",name:"Cream Cheek 膏状腮红",price:"≈¥660",note:"膏状血色感，手抹自然透出，超平价。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Canmake_cream_cheek_25_Cherry_Whipped_Cream.webp?v=1776840652"},
-  {cat:"makeup",tier:"value",brand:"ケイト KATE",name:"3D 染眉膏",price:"≈¥900",note:"染眉调色+定型蓬松，配眉笔/眉粉更自然。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Kanebo-Kate-Tokyo-3D-Eyebrow-Color-Mascara-6-3g-1-2025-07-07T23_51_48.487Z.jpg?v=1760082060"},
+  {cat:"makeup",sub:"底妆",tier:"lux",brand:"Armani",name:"Luminous Silk 粉底",price:"约¥11,200",note:"奢妆粉底标杆，中等遮瑕+高级光泽。",img:"https://maisonbeautique.com/cdn/shop/files/3360372075554_main.jpg?v=1716605050"},
+  {cat:"makeup",sub:"底妆",tier:"lux",brand:"Charlotte Tilbury",name:"Hollywood Flawless Filter",price:"约¥7,900",note:"妆前/底妆二合一，做水光肌。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-4Medium-5060332329526-1.jpg?v=1771604763"},
+  {cat:"makeup",sub:"遮瑕",tier:"lux",brand:"NARS",name:"Radiant Creamy 遮瑕",price:"约¥5,200",note:"化妆师包里的常青遮瑕。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-CafeconLecheL26-607845012252-1.jpg?v=1774906710"},
+  {cat:"makeup",sub:"遮瑕",tier:"value",brand:"キャンメイク Canmake",name:"卡拉混合遮瑕",price:"≈¥825",note:"局部遮黑眼圈/痘印，平价好用。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-CAN-CC-LB-01-Canmake_Color_Mixing_Concealer_Light_Beige_SPF50_3.jpg?v=1746159236"},
+  {cat:"makeup",sub:"眉",tier:"value",brand:"セザンヌ Cezanne",name:"超細芯眉笔",price:"¥550",note:"0.8mm 极细芯，画平直眉，大人感关键。"},
+  {cat:"makeup",sub:"眉",tier:"lux",brand:"Anastasia",name:"Brow Wiz 眉笔",price:"约¥4,100",note:"细芯眉笔标杆。",img:"https://cdn.shopify.com/s/files/1/0751/0219/1907/products/abh_brow_wiz_Dark-Brown_0e14ce72-89da-4e74-a73d-3164aa70d2cf.jpg?v=1744915732"},
+  {cat:"makeup",sub:"眼影",tier:"value",brand:"excel",name:"スキニーリッチシャドウ",price:"≈¥1,650",note:"4 色棕调自然渐层，大人感名品。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Excel-Skinny-Rich-Shadow-Eyeshadow-1-2024-08-07T07_19_19.650Z.jpg?v=1746155060"},
+  {cat:"makeup",sub:"眼影",tier:"lux",brand:"SUQQU",name:"晶采七色眼影",price:"≈¥7,700",note:"日系眼影天花板，自然显高级。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/suqqu-signature-color-eyes-952975.png?v=1688732520"},
+  {cat:"makeup",sub:"腮红",tier:"value",brand:"セザンヌ Cezanne",name:"ナチュラルチーク 腮红",price:"¥396",note:"自然血色、提气色，超便宜好用。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/cezanne-natural-cheek-n-339186.png?v=1688730671"},
+  {cat:"makeup",sub:"腮红",tier:"lux",brand:"SUQQU",name:"纯色腮红",price:"≈¥6,600",note:"最懂「自然透出的血色」的日本顶奢。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/500120-BCB01-01.jpg?v=1720167791"},
+  {cat:"makeup",sub:"高光",tier:"value",brand:"セザンヌ Cezanne",name:"高光",price:"¥693",note:"鼻梁颧骨轻扫，做日系水光感。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Cezanne-Pearl-Glow-Highlighter-With-Brush-2-4g-1-2025-08-14T03_57_22.966Z.png?v=1755159956"},
+  {cat:"makeup",sub:"定妆",tier:"value",brand:"キャンメイク Canmake",name:"棉花糖定妆蜜粉",price:"≈¥1,034",note:"控油持妆、柔焦毛孔。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Canmake-Marshmallow-Finish-Powder-Foundation-SPF50-1-2024-09-23T23_26_11.316Z.jpg?v=1746155151"},
+  {cat:"makeup",sub:"妆前",tier:"value",brand:"セザンヌ Cezanne",name:"皮脂テカリ防止下地",price:"≈¥720",note:"只上 T 区，压油延长持妆。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-CEZ-UVM-BS-30-Cezanne_Make_Keep_Base_UV_30ml.jpg?v=1746159497"},
+  {cat:"makeup",sub:"睫毛",tier:"lux",brand:"NARS",name:"Climax 睫毛膏",price:"约¥4,200",note:"浓密不结块，化妆师常青款。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/global_images-607845070085-1.jpg?v=1774906646"},
+  {cat:"makeup",sub:"睫毛",tier:"value",brand:"Maybelline",name:"Sky High 睫毛膏",price:"约¥2,100",note:"开架睫毛神物，纤长不晕。",img:"https://static.beautytocare.com/cdn-cgi/image/f=auto/media/catalog/product/m/a/maybelline-lash-sensational-sky-high-mascara-01-very-black-7-2ml.jpg"},
+  {cat:"makeup",sub:"唇",tier:"lux",brand:"Charlotte Tilbury",name:"Pillow Talk 口红+唇线",price:"约¥5,700",note:"几乎是「自然裸唇」的代名词。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-PillowTalkFair-5056446634243-47.jpg?v=1769555487"},
+  {cat:"makeup",sub:"唇",tier:"value",brand:"オペラ OPERA",name:"リップティント 唇釉",price:"≈¥1,650",note:"玫瑰豆沙渐层咬唇，自然血色。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Opera_Lip_Tint_N_05_01.jpg?v=1770940899"},
+  {cat:"makeup",sub:"唇",tier:"value",brand:"ケイト KATE",name:"リップモンスター",price:"≈¥1,540",note:"保湿带色、持久，日常百搭。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Kate_Lip_Monster_01.jpg?v=1772334654"},
+  {cat:"makeup",sub:"定妆",tier:"lux",brand:"NARS",name:"Light Reflecting 散粉",price:"约¥6,500",note:"柔焦定妆、奶油肌光泽，不显假面、不卡纹。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-Crystal-194251075945-1.jpg?v=1774905878"},
+  {cat:"makeup",sub:"腮红",tier:"value",brand:"キャンメイク Canmake",name:"Glow Fleur 花瓣腮红",price:"≈¥715",note:"花瓣拼盘腮红，自然好推、显气色，平价常青。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/CanmakeGlowFleurCheeks11.jpg?v=1713184320"},
+  {cat:"makeup",sub:"眉",tier:"value",brand:"ケイト KATE",name:"Designing 三色眉粉",price:"≈¥1,200",note:"三色立体眉粉，自然渐层、新手友好。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Kate_Designing_Eyebrow_3D_ex4_01.jpg?v=1772758699"},
+  {cat:"makeup",sub:"眼线",tier:"value",brand:"Love Liner",name:"液体眼线笔 棕色",price:"≈¥1,650",note:"极细水笔，棕色温柔显色、持久不晕染。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/MSH_Love_Liner_Liquid_Eyeliner_R5_Brown.jpg?v=1770741282"},
+  {cat:"makeup",sub:"睫毛",tier:"value",brand:"Heroine Make",name:"Long & Curl 睫毛膏",price:"≈¥1,200",note:"防水纤长定型，泪汪汪也不晕，开架睫毛常胜款。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/isehan-japan-kiss-me-heroine-make-mascara-advanced-film-624629.jpg?v=1688731767"},
+  {cat:"makeup",sub:"睫毛",tier:"value",brand:"キャンメイク Canmake",name:"Quick Lash Curler 睫毛打底",price:"≈¥760",note:"卷翘定型打底，叠在睫毛膏前更持久不塌。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/products/canmake-quick-lash-curler-166923.jpg?v=1688730524"},
+  {cat:"makeup",sub:"睫毛",tier:"value",brand:"Shiseido 资生堂",name:"213 睫毛夹",price:"≈¥1,100",note:"传奇睫毛夹，贴合亚洲眼型、卷翘自然，几乎人手一只。",img:"https://cdn.shopify.com/s/files/1/0231/1294/1648/products/SHI2b.jpg?v=1756979612"},
+  {cat:"makeup",sub:"底妆",tier:"value",brand:"TIRTIR",name:"Mask Fit 红气垫",price:"约¥4,100",note:"高遮瑕持妆气垫，色号全、不卡粉，平价底妆爆款。",img:"https://cdn.shopify.com/s/files/1/0663/2757/6795/files/Group_596.png?v=1780882591"},
+  {cat:"makeup",sub:"腮红",tier:"value",brand:"キャンメイク Canmake",name:"Cream Cheek 膏状腮红",price:"≈¥660",note:"膏状血色感，手抹自然透出，超平价。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Canmake_cream_cheek_25_Cherry_Whipped_Cream.webp?v=1776840652"},
+  {cat:"makeup",sub:"眉",tier:"value",brand:"ケイト KATE",name:"3D 染眉膏",price:"≈¥900",note:"染眉调色+定型蓬松，配眉笔/眉粉更自然。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Kanebo-Kate-Tokyo-3D-Eyebrow-Color-Mascara-6-3g-1-2025-07-07T23_51_48.487Z.jpg?v=1760082060"},
 
   // —— 头发 ——
-  {cat:"hair",tier:"lux",brand:"Olaplex",name:"No.3 断键修护",price:"约¥4,900",note:"染烫/热损伤修护的全球标杆。",img:"https://cdn.shopify.com/s/files/1/0568/4484/5206/files/No33oz.jpg?v=1773272378"},
-  {cat:"hair",tier:"lux",brand:"K18",name:"修护发膜",price:"约¥12,200",note:"肽技术，免冲洗 4 分钟，步骤更少。",img:"https://cdn.shopify.com/s/files/1/0094/8384/5679/files/00_Mask.jpg?v=1726613673"},
-  {cat:"hair",tier:"lux",brand:"Kérastase",name:"洗护系列",price:"约¥7,300",note:"柔顺光泽、沙龙手感。",img:"https://shop.sass-salon.com/cdn/shop/files/102093.jpg?v=1687814298"},
-  {cat:"hair",tier:"lux",brand:"Oribe",name:"Gold Lust 发油",price:"约¥8,400",note:"玻璃光泽，高端造型+标志性香味。",img:"https://cdn.shopify.com/s/files/1/0738/6084/1787/products/1200Wx1200H-400270.jpg?v=1691604240"},
-  {cat:"hair",tier:"value",brand:"N. （エヌドット）",name:"ポリッシュオイル 发油",price:"≈¥1,000",note:"做日系发丝光泽+湿发垂感的关键，最划算。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Napla-N--Polish-Oil-150ml-1-2024-08-19T04_05_40.097Z.jpg?v=1743424116"},
-  {cat:"hair",tier:"value",brand:"大島椿",name:"山茶油",price:"≈¥1,500",note:"自然光泽、抚平毛躁，老牌可靠。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Oshima-Tsubaki-Pure-Natural-Japanese-Camellia-Oil-60ml-1-2024-08-07T08_10_55.548Z.jpg?v=1746161226"},
-  {cat:"hair",tier:"value",brand:"& honey",name:"光泽洗护",price:"≈¥1,500",note:"日系人气款，主打光泽不毛躁。",img:"https://cdn.shopify.com/s/files/1/0378/7590/8747/files/honeyDeepMoistShampoo.jpg?v=1745322000"},
-  {cat:"hair",tier:"value",brand:"YOLU",name:"夜间修护洗护",price:"≈¥1,500",note:"睡眠修护概念，柔顺好打理。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-YOLU-CNRSHA-475-Yolu_Calm_Night_Repair_Silicone_Free_Shampoo_for_Damaged_Hair_475ml.jpg?v=1746155217"},
-  {cat:"hair",tier:"lux",brand:"Dyson",name:"Airwrap 多功能造型器",price:"约¥97,200",note:"低热损伤、卷直一体。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/files/566f149a4ca24390a7ed8a689a6812fc.webp?v=1781868922"},
-  {cat:"hair",tier:"value",brand:"Fino 资生堂",name:"高效渗透护发膜",price:"≈¥1,000",note:"日本开架发膜神物，受损发顺滑出光泽，超划算。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Shiseido_Fino_Premium_Touch_Penetrating_Serum_Hair_Mask_230g.jpg?v=1753934832"},
+  {cat:"hair",sub:"修护发膜",tier:"lux",brand:"Olaplex",name:"No.3 断键修护",price:"约¥4,900",note:"染烫/热损伤修护的全球标杆。",img:"https://cdn.shopify.com/s/files/1/0568/4484/5206/files/No33oz.jpg?v=1773272378"},
+  {cat:"hair",sub:"修护发膜",tier:"lux",brand:"K18",name:"修护发膜",price:"约¥12,200",note:"肽技术，免冲洗 4 分钟，步骤更少。",img:"https://cdn.shopify.com/s/files/1/0094/8384/5679/files/00_Mask.jpg?v=1726613673"},
+  {cat:"hair",sub:"洗护",tier:"lux",brand:"Kérastase",name:"洗护系列",price:"约¥7,300",note:"柔顺光泽、沙龙手感。",img:"https://shop.sass-salon.com/cdn/shop/files/102093.jpg?v=1687814298"},
+  {cat:"hair",sub:"发油造型",tier:"lux",brand:"Oribe",name:"Gold Lust 发油",price:"约¥8,400",note:"玻璃光泽，高端造型+标志性香味。",img:"https://cdn.shopify.com/s/files/1/0738/6084/1787/products/1200Wx1200H-400270.jpg?v=1691604240"},
+  {cat:"hair",sub:"发油造型",tier:"value",brand:"N. （エヌドット）",name:"ポリッシュオイル 发油",price:"≈¥1,000",note:"做日系发丝光泽+湿发垂感的关键，最划算。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Napla-N--Polish-Oil-150ml-1-2024-08-19T04_05_40.097Z.jpg?v=1743424116"},
+  {cat:"hair",sub:"发油造型",tier:"value",brand:"大島椿",name:"山茶油",price:"≈¥1,500",note:"自然光泽、抚平毛躁，老牌可靠。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Oshima-Tsubaki-Pure-Natural-Japanese-Camellia-Oil-60ml-1-2024-08-07T08_10_55.548Z.jpg?v=1746161226"},
+  {cat:"hair",sub:"洗护",tier:"value",brand:"& honey",name:"光泽洗护",price:"≈¥1,500",note:"日系人气款，主打光泽不毛躁。",img:"https://cdn.shopify.com/s/files/1/0378/7590/8747/files/honeyDeepMoistShampoo.jpg?v=1745322000"},
+  {cat:"hair",sub:"洗护",tier:"value",brand:"YOLU",name:"夜间修护洗护",price:"≈¥1,500",note:"睡眠修护概念，柔顺好打理。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-YOLU-CNRSHA-475-Yolu_Calm_Night_Repair_Silicone_Free_Shampoo_for_Damaged_Hair_475ml.jpg?v=1746155217"},
+  {cat:"hair",sub:"造型器",tier:"lux",brand:"Dyson",name:"Airwrap 多功能造型器",price:"约¥97,200",note:"低热损伤、卷直一体。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/files/566f149a4ca24390a7ed8a689a6812fc.webp?v=1781868922"},
+  {cat:"hair",sub:"修护发膜",tier:"value",brand:"Fino 资生堂",name:"高效渗透护发膜",price:"≈¥1,000",note:"日本开架发膜神物，受损发顺滑出光泽，超划算。",img:"https://cdn.shopify.com/s/files/1/0346/3403/9341/files/Shiseido_Fino_Premium_Touch_Penetrating_Serum_Hair_Mask_230g.jpg?v=1753934832"},
 
   // —— 身体 / 沐浴 ——
-  {cat:"body",tier:"lux",brand:"Aesop",name:"身体洁肤露",price:"约¥6,300",note:"clean luxury 标杆，洗完留香高级，最提清潔感。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-169floz-9319944038316-1.jpg?v=1772820544"},
-  {cat:"body",tier:"lux",brand:"Diptyque",name:"沐浴露",price:"约¥7,800",note:"气味高级，沐浴+身体乳成系列。",img:"https://cdn.shopify.com/s/files/1/1347/3383/files/33313-new-min.jpg?v=1772824801"},
-  {cat:"body",tier:"value",brand:"La Roche-Posay",name:"Lipikar 沐浴露",price:"约¥2,400",note:"皮肤科最推、含烟酰胺，敏感干皮脸身可用。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/La-Roche-Posay-Baby-Lipikar-Syndet-AP_-Hair-_-Body-Wash1.jpg?v=1659354587"},
-  {cat:"body",tier:"value",brand:"Sol de Janeiro",name:"Brazilian Bum Bum 沐浴",price:"约¥4,100",note:"平价香氛，留香讨喜。",img:"https://cdn.shopify.com/s/files/1/2826/2250/files/Brazilian_Bum_Bum_Cream_Sol_de_Janeiro_0.jpg?v=1771446095"},
-  {cat:"body",tier:"value",brand:"Nécessaire",name:"身体精华",price:"约¥4,900",note:"含烟酰胺，护理身体肤质。",img:"https://cdn.shopify.com/s/files/1/0034/8812/0947/files/01_THE_BODY_SERUM_PDP.jpg?v=1762200032"},
-  {cat:"body",tier:"value",brand:"SABON",name:"盐磨砂",price:"约¥6,500",note:"身体去角质经典，让身体也透亮。",img:"https://cdn.shopify.com/s/files/1/0561/8984/5551/files/61302000011BodyScrubSmallP-L-V320gr_SabonJar_new.png?v=1747937761"},
-  {cat:"body",tier:"value",brand:"Curél",name:"神经酰胺身体乳",price:"≈¥1,200",note:"干燥身体肌救星，性价比高。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-KAO-CUR-BL-220-Kao_Curel_Moisture_Milk_Body_Lotion_220ml.jpg?v=1746159381"},
-  {cat:"body",tier:"lux",brand:"Aesop",name:"Resurrection 护手霜",price:"约¥4,700",note:"高级留香，手是除脸最常被看到的部位。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/global_images-3614274581096-1.jpg?v=1769963290"},
-  {cat:"body",tier:"value",brand:"L'OCCITANE",name:"乳木果护手霜",price:"约¥1,900",note:"经典滋润，平价常备。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/products/388cdf8061ce4f2687584c3e0bbb847d_4e37fd1e-e611-4a26-9454-91c0dec47f28.jpg?v=1655982841"},
-  {cat:"body",tier:"value",brand:"CeraVe",name:"SA 水杨酸身体乳",price:"约¥2,600",note:"水杨酸+神经酰胺，去鸡皮、磨平粗糙，平价有效。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/Cerave-SA-Smoothing-Cream-340ml.jpg?v=1695203195"},
+  {cat:"body",sub:"沐浴",tier:"lux",brand:"Aesop",name:"身体洁肤露",price:"约¥6,300",note:"clean luxury 标杆，洗完留香高级，最提清潔感。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-169floz-9319944038316-1.jpg?v=1772820544"},
+  {cat:"body",sub:"沐浴",tier:"lux",brand:"Diptyque",name:"沐浴露",price:"约¥7,800",note:"气味高级，沐浴+身体乳成系列。",img:"https://cdn.shopify.com/s/files/1/1347/3383/files/33313-new-min.jpg?v=1772824801"},
+  {cat:"body",sub:"沐浴",tier:"value",brand:"La Roche-Posay",name:"Lipikar 沐浴露",price:"约¥2,400",note:"皮肤科最推、含烟酰胺，敏感干皮脸身可用。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/La-Roche-Posay-Baby-Lipikar-Syndet-AP_-Hair-_-Body-Wash1.jpg?v=1659354587"},
+  {cat:"body",sub:"沐浴",tier:"value",brand:"Sol de Janeiro",name:"Brazilian Bum Bum 沐浴",price:"约¥4,100",note:"平价香氛，留香讨喜。",img:"https://cdn.shopify.com/s/files/1/2826/2250/files/Brazilian_Bum_Bum_Cream_Sol_de_Janeiro_0.jpg?v=1771446095"},
+  {cat:"body",sub:"身体乳",tier:"value",brand:"Nécessaire",name:"身体精华",price:"约¥4,900",note:"含烟酰胺，护理身体肤质。",img:"https://cdn.shopify.com/s/files/1/0034/8812/0947/files/01_THE_BODY_SERUM_PDP.jpg?v=1762200032"},
+  {cat:"body",sub:"磨砂",tier:"value",brand:"SABON",name:"盐磨砂",price:"约¥6,500",note:"身体去角质经典，让身体也透亮。",img:"https://cdn.shopify.com/s/files/1/0561/8984/5551/files/61302000011BodyScrubSmallP-L-V320gr_SabonJar_new.png?v=1747937761"},
+  {cat:"body",sub:"身体乳",tier:"value",brand:"Curél",name:"神经酰胺身体乳",price:"≈¥1,200",note:"干燥身体肌救星，性价比高。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-KAO-CUR-BL-220-Kao_Curel_Moisture_Milk_Body_Lotion_220ml.jpg?v=1746159381"},
+  {cat:"body",sub:"护手",tier:"lux",brand:"Aesop",name:"Resurrection 护手霜",price:"约¥4,700",note:"高级留香，手是除脸最常被看到的部位。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/global_images-3614274581096-1.jpg?v=1769963290"},
+  {cat:"body",sub:"护手",tier:"value",brand:"L'OCCITANE",name:"乳木果护手霜",price:"约¥1,900",note:"经典滋润，平价常备。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/products/388cdf8061ce4f2687584c3e0bbb847d_4e37fd1e-e611-4a26-9454-91c0dec47f28.jpg?v=1655982841"},
+  {cat:"body",sub:"身体乳",tier:"value",brand:"CeraVe",name:"SA 水杨酸身体乳",price:"约¥2,600",note:"水杨酸+神经酰胺，去鸡皮、磨平粗糙，平价有效。",img:"https://cdn.shopify.com/s/files/1/0419/5447/6194/products/Cerave-SA-Smoothing-Cream-340ml.jpg?v=1695203195"},
 
   // —— 香氛 ——
-  {cat:"scent",tier:"lux",brand:"Le Labo",name:"Santal 33",price:"约¥35,600",note:"高级小众标杆，木质麝香。",img:"https://lelabo.ips.photos/lelabo-java/images/skus/050PS33100__PRODUCT_01--IMG_1200--SANTAL33--79960236.jpg"},
-  {cat:"scent",tier:"lux",brand:"Byredo",name:"经典香水",price:"约¥32,400",note:"现代小众香的代表。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-17floz-7340032875300-1.jpg?v=1775754794"},
-  {cat:"scent",tier:"value",brand:"SHIRO",name:"サボン / 皂感香",price:"≈¥4,000",note:"皂感清新，最贴「日本女人感」的干净系。"},
-  {cat:"scent",tier:"lux",brand:"Jo Malone",name:"轻盈日常香",price:"约¥24,300",note:"清爽好搭，适合日常。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-30ml-690251000036-1_a818b3a2-b611-433e-8df5-c1897684b22a.jpg?v=1775744464"},
-  {cat:"scent",tier:"value",brand:"Maison Margiela",name:"Replica 系列",price:"约¥16,200",note:"场景香，干净不浓甜。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/files/d62ea2502fb24e51bf3209be865e6221.jpg?v=1772463646"},
+  {cat:"scent",sub:"香水",tier:"lux",brand:"Le Labo",name:"Santal 33",price:"约¥35,600",note:"高级小众标杆，木质麝香。",img:"https://lelabo.ips.photos/lelabo-java/images/skus/050PS33100__PRODUCT_01--IMG_1200--SANTAL33--79960236.jpg"},
+  {cat:"scent",sub:"香水",tier:"lux",brand:"Byredo",name:"经典香水",price:"约¥32,400",note:"现代小众香的代表。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-17floz-7340032875300-1.jpg?v=1775754794"},
+  {cat:"scent",sub:"皂感清新",tier:"value",brand:"SHIRO",name:"サボン / 皂感香",price:"≈¥4,000",note:"皂感清新，最贴「日本女人感」的干净系。"},
+  {cat:"scent",sub:"香水",tier:"lux",brand:"Jo Malone",name:"轻盈日常香",price:"约¥24,300",note:"清爽好搭，适合日常。",img:"https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-30ml-690251000036-1_a818b3a2-b611-433e-8df5-c1897684b22a.jpg?v=1775744464"},
+  {cat:"scent",sub:"香水",tier:"value",brand:"Maison Margiela",name:"Replica 系列",price:"约¥16,200",note:"场景香，干净不浓甜。",img:"https://cdn.shopify.com/s/files/1/0291/4536/6588/files/d62ea2502fb24e51bf3209be865e6221.jpg?v=1772463646"},
 
   // —— 口腔 ——
-  {cat:"oral",tier:"value",brand:"Oral-B",name:"iO 电动牙刷",price:"约¥24,300",note:"3D 追踪、专业级洁净感，口碑最好。"},
-  {cat:"oral",tier:"value",brand:"AquaSonic",name:"Black Series 电动牙刷",price:"约¥6,500",note:"有 ADA 认证、性价比高的入门选择。"},
-  {cat:"oral",tier:"value",brand:"Crest",name:"3D White 美白牙贴",price:"约¥7,300",note:"居家美白公认有效款；想彻底白找诊所冷光。"},
-  {cat:"oral",tier:"value",brand:"Waterpik",name:"冲牙器",price:"约¥11,300",note:"清牙缝、护牙龈。"},
-  {cat:"oral",tier:"value",brand:"Ora2 サンスター",name:"亮白净色牙膏",price:"≈¥500",note:"日系去渍亮白牙膏，温和不刺激，日常美白入门。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Sunstar-Ora2-Stain-Removal-Toothpaste-Peach-Mint-Flavor-130g-1-2025-04-18T01_56_57.867Z.png?v=1744942880"},
+  {cat:"oral",sub:"电动牙刷",tier:"value",brand:"Oral-B",name:"iO 电动牙刷",price:"约¥24,300",note:"3D 追踪、专业级洁净感，口碑最好。"},
+  {cat:"oral",sub:"电动牙刷",tier:"value",brand:"AquaSonic",name:"Black Series 电动牙刷",price:"约¥6,500",note:"有 ADA 认证、性价比高的入门选择。"},
+  {cat:"oral",sub:"牙膏/美白",tier:"value",brand:"Crest",name:"3D White 美白牙贴",price:"约¥7,300",note:"居家美白公认有效款；想彻底白找诊所冷光。"},
+  {cat:"oral",sub:"冲牙护理",tier:"value",brand:"Waterpik",name:"冲牙器",price:"约¥11,300",note:"清牙缝、护牙龈。"},
+  {cat:"oral",sub:"牙膏/美白",tier:"value",brand:"Ora2 サンスター",name:"亮白净色牙膏",price:"≈¥500",note:"日系去渍亮白牙膏，温和不刺激，日常美白入门。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/Sunstar-Ora2-Stain-Removal-Toothpaste-Peach-Mint-Flavor-130g-1-2025-04-18T01_56_57.867Z.png?v=1744942880"},
 
   // —— 仪器 / 工具 ——
-  {cat:"tools",tier:"lux",brand:"Omnilux",name:"Contour Face LED 红光面罩",price:"约¥64,000",note:"皮肤科公认居家红光金标准，临床证据足。",img:"https://cdn.shopify.com/s/files/1/0482/6736/2466/files/Contour_Face_Cover_Image.jpg?v=1756958460"},
-  {cat:"tools",tier:"lux",brand:"Shark",name:"CryoGlow LED 面罩",price:"约¥56,700",note:"红光+蓝光+冷敷去眼袋，一机多用。"},
-  {cat:"tools",tier:"value",brand:"NuFACE",name:"微电流提拉仪",price:"约¥32,400",note:"即时轮廓提拉，经典款。",img:"https://cdn.shopify.com/s/files/1/0742/5785/files/silo_dtc_award_trinity_starter_2000x2000_31151d17-0fe0-4579-81bc-95a45152cde3.jpg?v=1778689751"},
-  {cat:"tools",tier:"lux",brand:"ZIIP",name:"Halo 微电流仪",price:"约¥64,600",note:"微电流+纳米电流，进阶玩家向。",img:"https://cdn.shopify.com/s/files/1/1768/8429/files/ZIIP-25-BAU-201-Ecom_Halo_Gels_03.jpg?v=1776065964"},
-  {cat:"tools",tier:"value",brand:"ReFa",name:"嫩肤滚轮",price:"≈¥7,000",note:"入门级面部循环，用得勤最重要。"},
+  {cat:"tools",sub:"光疗面罩",tier:"lux",brand:"Omnilux",name:"Contour Face LED 红光面罩",price:"约¥64,000",note:"皮肤科公认居家红光金标准，临床证据足。",img:"https://cdn.shopify.com/s/files/1/0482/6736/2466/files/Contour_Face_Cover_Image.jpg?v=1756958460"},
+  {cat:"tools",sub:"光疗面罩",tier:"lux",brand:"Shark",name:"CryoGlow LED 面罩",price:"约¥56,700",note:"红光+蓝光+冷敷去眼袋，一机多用。"},
+  {cat:"tools",sub:"微电流",tier:"value",brand:"NuFACE",name:"微电流提拉仪",price:"约¥32,400",note:"即时轮廓提拉，经典款。",img:"https://cdn.shopify.com/s/files/1/0742/5785/files/silo_dtc_award_trinity_starter_2000x2000_31151d17-0fe0-4579-81bc-95a45152cde3.jpg?v=1778689751"},
+  {cat:"tools",sub:"微电流",tier:"lux",brand:"ZIIP",name:"Halo 微电流仪",price:"约¥64,600",note:"微电流+纳米电流，进阶玩家向。",img:"https://cdn.shopify.com/s/files/1/1768/8429/files/ZIIP-25-BAU-201-Ecom_Halo_Gels_03.jpg?v=1776065964"},
+  {cat:"tools",sub:"按摩",tier:"value",brand:"ReFa",name:"嫩肤滚轮",price:"≈¥7,000",note:"入门级面部循环，用得勤最重要。"},
 
   // —— 内服（可选，证据参差）——
-  {cat:"inner",tier:"value",brand:"トランシーノ",name:"口服传明酸",price:"≈¥1,900",note:"日系美白内服，证据参差，当锦上添花。有基础病/备孕先问医生。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-TRA-WCCLEA-240-Transino_White_C_Clear_Whitening_Supplement_240_Tablets.jpg?v=1743422145"},
-  {cat:"inner",tier:"value",brand:"コラーゲン",name:"胶原蛋白饮",price:"因品牌而异",note:"日系 inner beauty 文化，效果因人而异。"},
-  {cat:"inner",tier:"value",brand:"Biotin",name:"生物素",price:"因品牌而异",note:"头发指甲常见补充，别过量。"},
+  {cat:"inner",sub:"美白",tier:"value",brand:"トランシーノ",name:"口服传明酸",price:"≈¥1,900",note:"日系美白内服，证据参差，当锦上添花。有基础病/备孕先问医生。",img:"https://cdn.shopify.com/s/files/1/1969/5775/files/P-1-TRA-WCCLEA-240-Transino_White_C_Clear_Whitening_Supplement_240_Tablets.jpg?v=1743422145"},
+  {cat:"inner",sub:"美容补充",tier:"value",brand:"コラーゲン",name:"胶原蛋白饮",price:"因品牌而异",note:"日系 inner beauty 文化，效果因人而异。"},
+  {cat:"inner",sub:"美容补充",tier:"value",brand:"Biotin",name:"生物素",price:"因品牌而异",note:"头发指甲常见补充，别过量。"},
 ];
 
 /* ====== 渲染 ====== */
@@ -446,10 +513,23 @@ function render(immediate){
     const sec = document.createElement("section");
     sec.className="group";
     sec.id="g-"+c.id;
-    sec.innerHTML = `<div class="group-head">
+    let inner = `<div class="group-head">
         <h2>${c.zh}</h2><span class="en">${c.en}</span><span class="ct">${items.length} 件</span>
-      </div>
-      <div class="grid">${items.map(cardHTML).join("")}</div>`;
+      </div>`;
+    // 按细类分组渲染：SUBS 给定顺序，未列出的细类排在后面
+    const order = (SUBS[c.id]||[]).slice();
+    [...new Set(items.map(p=>p.sub).filter(Boolean))].forEach(sid=>{
+      if(!order.some(s=>s.id===sid)) order.push({id:sid,fn:""});
+    });
+    order.forEach(sb=>{
+      const its = items.filter(p=>p.sub===sb.id);
+      if(!its.length) return;
+      inner += `<div class="sub-head"><h3>${sb.id}</h3>${sb.fn?`<span class="fn">${sb.fn}</span>`:""}<span class="sc">${its.length} 件</span></div>
+      <div class="grid">${its.map(cardHTML).join("")}</div>`;
+    });
+    const noSub = items.filter(p=>!p.sub);
+    if(noSub.length) inner += `<div class="grid">${noSub.map(cardHTML).join("")}</div>`;
+    sec.innerHTML = inner;
     host.appendChild(sec);
   });
   document.getElementById("empty").classList.toggle("show", total===0);

@@ -189,6 +189,7 @@
   .product-orbit{
     position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .28s ease;z-index:24;
   }
+  .product-orbit{display:none!important;}
   .product-orbit.show{opacity:1;pointer-events:none;}
   .orbit-track{
     position:absolute;left:var(--track-x);top:var(--track-y);width:var(--track-w);height:var(--track-h);
@@ -828,12 +829,12 @@ function imgFail(img){
 
 function setCategory(cat, anchor){
   state.cat = cat;
+  clearFloatingProducts();
   document.querySelectorAll('.chip[data-group="cat"]').forEach(x=>x.setAttribute("aria-pressed", x.dataset.val===cat ? "true" : "false"));
   document.querySelectorAll(".top-nav button").forEach(x=>x.setAttribute("aria-pressed", x.dataset.cat===cat ? "true" : "false"));
   document.querySelectorAll(".planet").forEach(x=>x.setAttribute("aria-pressed", x.dataset.cat===cat ? "true" : "false"));
-  showFloatingProducts(cat, anchor || document.querySelector(`.planet[data-cat="${cat}"]`));
   render();
-  if(!anchor) document.getElementById("sections").scrollIntoView({behavior:"smooth", block:"start"});
+  document.getElementById("sections").scrollIntoView({behavior:"smooth", block:"start"});
 }
 
 function clearFloatingProducts(){

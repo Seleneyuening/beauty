@@ -122,6 +122,10 @@
     transition:transform .25s,box-shadow .25s;z-index:18;
   }
   .planet:hover,.planet:focus-visible{transform:translate(-50%,-50%) scale(1.03);outline:none;}
+  .planet[aria-pressed="true"] .planet-orb{
+    transform:scale(1.04);
+    box-shadow:0 0 46px color-mix(in srgb,var(--glow),transparent 8%),0 0 88px rgba(255,231,214,.22),inset -18px -20px 38px rgba(24,19,66,.24);
+  }
   .planet-orb{
     position:absolute;left:0;top:0;width:var(--size);height:var(--size);border-radius:50%;
     background:
@@ -183,44 +187,47 @@
   .hero-foot{display:flex;justify-content:space-between;margin:18px 22px 0;color:#E8E2EF;font-size:13px;}
   .hero-foot span{margin-right:28px;}
   .product-orbit{
-    position:absolute;left:var(--orbit-x,50%);top:var(--orbit-y,50%);width:340px;max-height:500px;
-    display:grid;gap:10px;transform:translate(var(--orbit-shift-x,120px),var(--orbit-shift-y,-90px));
-    pointer-events:none;opacity:0;transition:opacity .28s ease,transform .28s ease;z-index:12;
+    position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .28s ease;z-index:24;
   }
-  .product-orbit.show{opacity:1;pointer-events:auto;}
-  .product-orbit::before{
-    content:"";position:absolute;left:var(--line-x,-120px);top:var(--line-y,80px);width:120px;height:1px;
-    background:linear-gradient(90deg,rgba(255,210,168,.12),rgba(255,235,218,.86),rgba(255,255,255,.08));
-    box-shadow:0 0 12px rgba(255,221,183,.55);transform:rotate(var(--line-rot,0deg));transform-origin:left center;
+  .product-orbit.show{opacity:1;pointer-events:none;}
+  .orbit-track{
+    position:absolute;left:var(--track-x);top:var(--track-y);width:var(--track-w);height:var(--track-h);
+    border:1px solid rgba(255,221,190,.34);border-radius:50%;transform:translate(-50%,-50%) rotate(var(--track-rot,-8deg));
+    box-shadow:0 0 22px rgba(255,218,184,.16);pointer-events:none;
   }
-  .orbit-title{
-    display:flex;align-items:center;justify-content:space-between;color:#FFF7FA;
-    font-family:"Noto Serif SC",serif;font-size:17px;text-shadow:0 2px 16px rgba(10,8,36,.45);
+  .satellite{
+    position:absolute;left:var(--sat-x);top:var(--sat-y);display:grid;grid-template-columns:30px 1fr;align-items:center;gap:8px;
+    width:150px;min-height:48px;padding:7px 10px;border:1px solid rgba(255,255,255,.18);border-radius:999px;
+    background:rgba(25,24,70,.46);color:#FFF9FC;text-align:left;box-shadow:0 12px 28px rgba(6,8,34,.24),inset 0 0 0 1px rgba(255,255,255,.04);
+    backdrop-filter:blur(13px);cursor:pointer;pointer-events:auto;transform:translate(-50%,-50%);transition:transform .22s ease,border-color .22s ease;
   }
-  .orbit-close{border:0;background:rgba(255,255,255,.14);color:#fff;border-radius:999px;width:28px;height:28px;cursor:pointer;}
-  .floating-product{
-    display:grid;grid-template-columns:56px 1fr;align-items:center;gap:12px;width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.18);
-    border-radius:24px;background:rgba(20,22,66,.48);color:#FFF9FC;text-align:left;
-    box-shadow:0 14px 34px rgba(7,9,35,.24),inset 0 0 0 1px rgba(255,255,255,.05);
-    backdrop-filter:blur(16px);pointer-events:auto;opacity:.98;transition:transform .25s ease,border-color .25s ease;
+  .satellite:hover,.satellite.active{border-color:rgba(255,224,194,.48);transform:translate(-50%,-50%) scale(1.03);}
+  .satellite::before{
+    content:"";position:absolute;left:50%;top:50%;width:var(--ray-l,42px);height:1px;
+    background:linear-gradient(90deg,rgba(255,230,206,.75),rgba(255,255,255,0));box-shadow:0 0 10px rgba(255,225,198,.5);
+    transform:rotate(var(--ray-a,0deg));transform-origin:left center;pointer-events:none;
   }
-  .floating-product:hover{border-color:rgba(255,224,194,.45);transform:translateY(-3px);}
-  .floating-product img{
-    width:50px;height:58px;object-fit:contain;filter:drop-shadow(0 8px 12px rgba(8,7,28,.42));
+  .satellite img{width:30px;height:30px;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(8,7,28,.34));}
+  .sat-label{min-width:0;}
+  .sat-label b{display:block;font-family:"Noto Serif SC",serif;font-size:12px;line-height:1.15;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sat-label span{display:inline-block;margin-top:4px;font-size:9px;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.13);color:#FFE5C9;}
+  .sat-detail{
+    position:absolute;left:var(--detail-x);top:var(--detail-y);width:260px;padding:15px;border:1px solid rgba(255,255,255,.2);border-radius:22px;
+    background:rgba(21,22,68,.72);color:#FFF9FC;box-shadow:0 18px 46px rgba(6,8,34,.34);backdrop-filter:blur(18px);
+    pointer-events:auto;transform:translate(-50%,-50%);
   }
-  .sat-fallback{
-    width:50px;height:50px;border-radius:50%;display:grid;place-items:center;
-    background:rgba(255,255,255,.14);font-family:"Noto Serif SC",serif;color:#fff;
+  .sat-detail-head{display:grid;grid-template-columns:76px 1fr;gap:14px;align-items:center;}
+  .sat-detail img{width:76px;height:92px;object-fit:contain;filter:drop-shadow(0 10px 16px rgba(8,7,28,.42));}
+  .sat-detail h3{margin:0;font-family:"Noto Serif SC",serif;font-size:18px;line-height:1.25;font-weight:500;}
+  .sat-detail em{display:block;margin-top:5px;font-style:normal;font-size:11px;color:rgba(249,242,255,.72);}
+  .sat-detail p{margin:12px 0 0;font-size:12px;line-height:1.65;color:rgba(249,242,255,.78);}
+  .sat-actions{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+  .sat-actions button{
+    border:1px solid rgba(255,255,255,.22);border-radius:999px;background:rgba(255,255,255,.08);
+    color:#FFF9FC;font:inherit;font-size:11px;padding:6px 9px;cursor:pointer;
   }
-  .sat-body{min-width:0;}
-  .sat-name{display:block;font-family:"Noto Serif SC",serif;font-size:15px;line-height:1.25;font-weight:500;}
-  .sat-note{display:block;margin-top:4px;font-size:11px;line-height:1.35;color:rgba(249,242,255,.72);}
-  .sat-meta{display:flex;align-items:center;gap:7px;margin-top:7px;flex-wrap:wrap;}
-  .sat-tier{font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.13);color:#FFE5C9;}
-  .sat-actions{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;}
-  .sat-actions button{border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.08);color:#FFF9FC;font:inherit;font-size:10px;padding:4px 8px;cursor:pointer;}
   .sat-actions button[aria-pressed="true"]{background:rgba(255,225,196,.22);border-color:rgba(255,225,196,.5);}
-  .floating-product.more-product{display:block;padding:9px 14px;text-align:center;font-family:"Noto Serif SC",serif;}
+  .sat-fallback{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.14);font-family:"Noto Serif SC",serif;color:#fff;}
   @keyframes float{0%,100%{margin-top:0}50%{margin-top:-10px}}
   .stats{display:flex;gap:30px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.18);padding-top:18px;}
   .stat .n{font-family:"Noto Serif SC",serif;font-size:30px;font-weight:600;line-height:1;}
@@ -347,7 +354,7 @@
     .search-dot{display:none;}
     .list-pill{padding:7px 13px!important;font-size:13px!important;}
     .cosmic-stage{height:auto;min-height:0;margin-top:22px;}
-    .solar-system{position:relative;min-height:0;display:flex;gap:13px;overflow-x:auto;padding:182px 4px 24px;margin:0 -4px;scroll-snap-type:x mandatory;}
+    .solar-system{position:relative;z-index:1000;min-height:0;display:flex;gap:13px;overflow-x:auto;padding:182px 4px 24px;margin:0 -4px;scroll-snap-type:x mandatory;}
     .sun{display:flex;width:154px;height:154px;top:78px;left:50%;font-size:21px;}
     .sun span{font-size:10px;letter-spacing:.12em;}
     .orbit,.hero-quote{display:none;}
@@ -366,11 +373,16 @@
       position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;max-height:62vh;overflow:auto;
       transform:translateY(100%);padding:18px 18px 24px;background:rgba(15,18,58,.9);
       border-radius:24px 24px 0 0;border:1px solid rgba(255,255,255,.16);box-shadow:0 -18px 50px rgba(6,7,25,.36);
-      backdrop-filter:blur(18px);opacity:1;z-index:50;
+      backdrop-filter:blur(18px);opacity:1;z-index:999;
     }
-    .product-orbit.show{transform:translateY(0);}
+    .product-orbit.show{transform:translateY(0);pointer-events:auto;}
+    body.orbit-open .glass-dock,
+    body.orbit-open .controls{display:none;}
     .product-orbit::before{display:none;}
-    .floating-product{width:100%;grid-template-columns:52px 1fr;border-radius:18px;}
+    .orbit-track{display:none;}
+    .satellite{position:relative;left:auto!important;top:auto!important;transform:none!important;width:100%;margin-bottom:10px;}
+    .satellite::before{display:none;}
+    .sat-detail{position:relative;left:auto!important;top:auto!important;transform:none;width:100%;margin-top:12px;}
     .dock-cell{border-right:0;border-bottom:1px solid rgba(74,66,110,.18);min-height:0;padding:18px;}
     .dock-cell:last-child{border-bottom:0;}
     .daily-inspo img{width:88px;height:68px;}
@@ -828,72 +840,140 @@ function clearFloatingProducts(){
   const orbit = document.getElementById("productOrbit");
   orbit.classList.remove("show");
   orbit.innerHTML = "";
+  document.body.classList.remove("orbit-open");
   document.querySelectorAll(".planet").forEach(x=>x.setAttribute("aria-pressed","false"));
   activePlanetCat = "";
 }
 
-function positionProductOrbit(anchor){
-  const orbit = document.getElementById("productOrbit");
-  const stage = document.getElementById("solarNav");
-  const orb = anchor?.querySelector(".planet-orb");
-  if(!orb || innerWidth <= 600) return;
-  const stageBox = stage.getBoundingClientRect();
-  const orbBox = orb.getBoundingClientRect();
-  orbit.style.setProperty("--orbit-x", `${orbBox.left - stageBox.left + orbBox.width / 2}px`);
-  orbit.style.setProperty("--orbit-y", `${orbBox.top - stageBox.top + orbBox.height / 2}px`);
-  const offsets = {
-    skincare:[122,88],
-    makeup:[132,106],
-    hair:[-470,-88],
-    body:[144,-120],
-    scent:[-420,-226],
-    oral:[-470,-170],
-    tools:[-470,-188]
-  };
-  const [x,y] = offsets[anchor?.dataset.cat] || [-120,70];
-  orbit.style.setProperty("--orbit-shift-x", `${x}px`);
-  orbit.style.setProperty("--orbit-shift-y", `${y}px`);
-  orbit.style.setProperty("--line-x", `${x>0?-120:340}px`);
-  orbit.style.setProperty("--line-y", `${Math.max(28, -y + 34)}px`);
-  orbit.style.setProperty("--line-rot", x>0 ? "8deg" : "172deg");
-}
-
 let activePlanetCat = "";
+let activeProducts = [];
+let activeAnchor = null;
 function showFloatingProducts(cat, anchor){
   const orbit = document.getElementById("productOrbit");
   if(cat==="all"){ clearFloatingProducts(); return; }
   if(activePlanetCat===cat && orbit.classList.contains("show")){ clearFloatingProducts(); return; }
   activePlanetCat = cat;
-  const category = CATS.find(c=>c.id===cat);
+  activeAnchor = anchor;
   const categoryItems = PRODUCTS.filter(p=>p.cat===cat);
-  const items = categoryItems.slice(0,5);
-  positionProductOrbit(anchor);
-  const cards = [`<div class="orbit-title"><span>${category?.zh || "产品"} · 产品卫星</span><button class="orbit-close" type="button" aria-label="收起">×</button></div>`];
-  items.forEach(p=>{
+  activeProducts = categoryItems.slice(0,3);
+  renderProductSatellites(cat, anchor);
+}
+
+function renderProductSatellites(cat, anchor){
+  const orbit = document.getElementById("productOrbit");
+  const layout = chooseSatelliteLayout(anchor, activeProducts.length);
+  const nodes = [`<div class="orbit-track" style="--track-x:${layout.cx}px;--track-y:${layout.cy}px;--track-w:${layout.trackW}px;--track-h:${layout.trackH}px;--track-rot:${layout.rot}deg"></div>`];
+  activeProducts.forEach((p,i)=>{
     const k = keyOf(p);
     const t = TIERS[p.tier];
+    const pos = layout.points[i];
     const thumb = p.img
       ? `<img src="${p.img}" alt="${p.brand} ${p.name}" onerror="this.outerHTML='<span class=&quot;sat-fallback&quot;>${monogram(p.brand)}</span>'">`
       : `<span class="sat-fallback">${monogram(p.brand)}</span>`;
-    cards.push(`<article class="floating-product" data-key="${k}">
+    nodes.push(`<button class="satellite" type="button" data-key="${k}" style="--sat-x:${pos.x}px;--sat-y:${pos.y}px;--ray-a:${pos.ray}deg;--ray-l:${pos.rayLen}px">
       ${thumb}
-      <div class="sat-body">
-        <span class="sat-name">${p.name}</span>
-        <span class="sat-note">${p.note}</span>
-        <div class="sat-meta"><span class="sat-tier">${t.zh}</span></div>
-        <div class="sat-actions">
-          <button type="button" data-list-action="want" aria-pressed="${listState.want.has(k)}">${listState.want.has(k)?"已收藏":"收藏到我的清单"}</button>
-          <button type="button" data-list-action="bought" aria-pressed="${bought.has(k)}">${bought.has(k)?"已买":"标记为已买"}</button>
-          <button type="button" data-list-action="using" aria-pressed="${listState.using.has(k)}">${listState.using.has(k)?"正在用":"标记为正在用"}</button>
-        </div>
+      <div class="sat-label">
+        <b>${p.name}</b>
+        <span>${shortTier(p.tier)}</span>
       </div>
-    </article>`);
+    </button>`);
   });
-  if(categoryItems.length>items.length){
-    cards.push(`<button class="floating-product more-product" type="button" data-action="all">查看${category?.zh || ""}全部产品</button>`);
-  }
-  orbit.innerHTML = cards.join("");
-  orbit.classList.toggle("show", cards.length>0);
+  orbit.innerHTML = nodes.join("");
+  orbit.classList.add("show");
+  document.body.classList.add("orbit-open");
+}
+
+function shortTier(tier){
+  return tier==="core" ? "内轨" : tier==="value" ? "中轨" : "外轨";
+}
+
+function chooseSatelliteLayout(anchor, count){
+  if(innerWidth <= 600) return mobileSatelliteLayout(count);
+  const stage = document.getElementById("solarNav");
+  const stageBox = stage.getBoundingClientRect();
+  const orbBox = anchor.querySelector(".planet-orb").getBoundingClientRect();
+  const cx = orbBox.left - stageBox.left + orbBox.width/2;
+  const cy = orbBox.top - stageBox.top + orbBox.height/2;
+  const safe = Math.max(86, orbBox.width * .86);
+  const manual = manualSatelliteLayout(anchor.dataset.cat, cx, cy, safe, count);
+  if(manual) return manual;
+  const reserves = reservedRects(stageBox, anchor, safe);
+  const preferred = {skincare:["bottom","left","right","top"], body:["top","right","bottom","left"]};
+  const dirs = preferred[anchor.dataset.cat] || ["right","left","top","bottom"];
+  const hasPreference = !!preferred[anchor.dataset.cat];
+  const candidates = dirs.map((dir,i)=>{
+    const layout = layoutForDir(dir,cx,cy,safe,count,stageBox,reserves);
+    if(hasPreference) layout.score += i * 12000;
+    return layout;
+  });
+  return candidates.sort((a,b)=>a.score-b.score)[0];
+}
+
+function manualSatelliteLayout(cat,cx,cy,safe,count){
+  const configs = {
+    skincare:{dx:[-115,55,225],dy:safe+104,trackW:430,trackH:250,rot:-5},
+    body:{dx:[325,495,665],dy:150,trackW:620,trackH:250,rot:-7},
+  };
+  const c = configs[cat];
+  if(!c) return null;
+  const points = c.dx.slice(0,count).map(x=>({x:cx+x,y:cy+c.dy,ray:cat==="body"?175:-110,rayLen:44}));
+  return {cx,cy,points,score:0,trackW:c.trackW,trackH:c.trackH,rot:c.rot};
+}
+
+function layoutForDir(dir,cx,cy,safe,count,stageBox,reserves){
+  const labelW = 150, labelH = 52;
+  const points = Array.from({length:count},(_,i)=>{
+    const centered = i - (count - 1) / 2;
+    let x = cx, y = cy;
+    if(dir==="right"){ x = cx + safe + 110; y = cy + centered * 62; }
+    if(dir==="left"){ x = cx - safe - 110; y = cy + centered * 62; }
+    if(dir==="top"){ x = cx + centered * 170; y = cy - safe - 74; }
+    if(dir==="bottom"){ x = cx + centered * 170; y = cy + safe + 74; }
+    const ray = Math.atan2(cy-y, cx-x) * 180 / Math.PI;
+    return {x,y,ray,rayLen:44,rect:{left:x-labelW/2,top:y-labelH/2,right:x+labelW/2,bottom:y+labelH/2}};
+  });
+  let score = 0;
+  points.forEach(p=>{
+    score += outPenalty(p.rect, stageBox);
+    reserves.forEach(r=>{ score += overlapArea(p.rect,r) * 30; });
+  });
+  return {
+    cx,cy,points,score,
+    trackW: dir==="left" || dir==="right" ? safe*2+250 : safe*2+380,
+    trackH: dir==="left" || dir==="right" ? safe*2+260 : safe*2+170,
+    rot: dir==="top" || dir==="bottom" ? -4 : -12,
+  };
+}
+
+function reservedRects(stageBox, anchor, safe){
+  const toStage = (r, pad=0)=>({left:r.left-stageBox.left-pad,top:r.top-stageBox.top-pad,right:r.right-stageBox.left+pad,bottom:r.bottom-stageBox.top+pad});
+  const rects = [];
+  document.querySelectorAll(".planet").forEach(p=>{
+    const orb = p.querySelector(".planet-orb").getBoundingClientRect();
+    rects.push(toStage(orb, p===anchor ? safe*.55 : 56));
+    rects.push(toStage(p.querySelector(".planet-copy").getBoundingClientRect(), 26));
+  });
+  rects.push(toStage(document.querySelector(".sun").getBoundingClientRect(), 24));
+  const quote = document.querySelector(".hero-quote");
+  if(quote && getComputedStyle(quote).display!=="none") rects.push(toStage(quote.getBoundingClientRect(), 16));
+  const dock = document.querySelector(".glass-dock");
+  if(dock && getComputedStyle(dock).display!=="none") rects.push(toStage(dock.getBoundingClientRect(), 22));
+  return rects;
+}
+
+function overlapArea(a,b){
+  const w = Math.max(0, Math.min(a.right,b.right)-Math.max(a.left,b.left));
+  const h = Math.max(0, Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top));
+  return w*h;
+}
+
+function outPenalty(r, stageBox){
+  const w = stageBox.width, h = stageBox.height;
+  return Math.max(0,-r.left)*1200 + Math.max(0,-r.top)*1200 + Math.max(0,r.right-w)*1200 + Math.max(0,r.bottom-h)*1200;
+}
+
+function mobileSatelliteLayout(count){
+  return {cx:0,cy:0,trackW:0,trackH:0,rot:0,score:0,points:Array.from({length:count},()=>({x:0,y:0,ray:0,rayLen:0}))};
 }
 
 function buildSolar(){
@@ -920,10 +1000,9 @@ function buildSolar(){
   });
   document.getElementById("nebulaToggle").addEventListener("click",clearFloatingProducts);
   document.getElementById("productOrbit").addEventListener("click",e=>{
-    if(e.target.closest(".orbit-close")){ clearFloatingProducts(); return; }
     const actionBtn = e.target.closest("[data-list-action]");
     if(actionBtn){
-      const item = actionBtn.closest(".floating-product");
+      const item = actionBtn.closest(".sat-detail");
       const k = item.dataset.key;
       const action = actionBtn.dataset.listAction;
       if(action==="bought"){
@@ -941,14 +1020,13 @@ function buildSolar(){
       updateProgress();
       return;
     }
-    const card = e.target.closest(".floating-product");
-    if(!card) return;
-    if(card.dataset.action==="all"){
+    const sat = e.target.closest(".satellite");
+    if(!sat) return;
+    if(sat.dataset.action==="all"){
       document.getElementById("sections").scrollIntoView({behavior:"smooth", block:"start"});
       return;
     }
-    const target = [...document.querySelectorAll(".card")].find(x=>x.dataset.key===card.dataset.key);
-    target?.scrollIntoView({behavior:"smooth", block:"center"});
+    showSatelliteDetail(sat);
   });
   document.addEventListener("click",e=>{
     if(!document.getElementById("productOrbit").classList.contains("show")) return;
@@ -965,6 +1043,55 @@ function renderSatelliteActions(item){
   item.querySelector('[data-list-action="bought"]').setAttribute("aria-pressed", bought.has(k) ? "true" : "false");
   item.querySelector('[data-list-action="using"]').textContent = listState.using.has(k) ? "正在用" : "标记为正在用";
   item.querySelector('[data-list-action="using"]').setAttribute("aria-pressed", listState.using.has(k) ? "true" : "false");
+}
+
+function showSatelliteDetail(sat){
+  document.querySelectorAll(".satellite").forEach(x=>x.classList.toggle("active", x===sat));
+  document.querySelector(".sat-detail")?.remove();
+  const p = PRODUCTS.find(x=>keyOf(x)===sat.dataset.key);
+  if(!p) return;
+  const pos = detailPosition(sat);
+  const k = keyOf(p);
+  const thumb = p.img
+    ? `<img src="${p.img}" alt="${p.brand} ${p.name}" onerror="this.outerHTML='<span class=&quot;sat-fallback&quot;>${monogram(p.brand)}</span>'">`
+    : `<span class="sat-fallback">${monogram(p.brand)}</span>`;
+  document.getElementById("productOrbit").insertAdjacentHTML("beforeend", `<article class="sat-detail" data-key="${k}" style="--detail-x:${pos.x}px;--detail-y:${pos.y}px">
+    <div class="sat-detail-head">
+      ${thumb}
+      <div><h3>${p.name}</h3><em>${p.brand} · ${shortTier(p.tier)}</em></div>
+    </div>
+    <p><b>核心功效：</b>${SUBS[p.cat]?.find(s=>s.id===p.sub)?.fn || p.sub || "日常护理"}</p>
+    <p><b>推荐理由：</b>${p.note}</p>
+    <div class="sat-actions">
+      <button type="button" data-list-action="want" aria-pressed="${listState.want.has(k)}">${listState.want.has(k)?"已收藏":"收藏到我的清单"}</button>
+      <button type="button" data-list-action="bought" aria-pressed="${bought.has(k)}">${bought.has(k)?"已买":"标记为已买"}</button>
+      <button type="button" data-list-action="using" aria-pressed="${listState.using.has(k)}">${listState.using.has(k)?"正在用":"标记为正在用"}</button>
+    </div>
+  </article>`);
+}
+
+function detailPosition(sat){
+  if(innerWidth <= 600) return {x:0,y:0};
+  const stageBox = document.getElementById("solarNav").getBoundingClientRect();
+  const r = sat.getBoundingClientRect();
+  const base = {x:r.left-stageBox.left+r.width/2,y:r.top-stageBox.top+r.height/2};
+  if(activePlanetCat==="hair") return {x:base.x-340,y:base.y};
+  if(activePlanetCat==="body") return {x:base.x+340,y:base.y};
+  const w = 260, h = 238;
+  const candidates = [
+    {x:base.x+340,y:base.y},
+    {x:base.x-340,y:base.y},
+    {x:base.x,y:base.y+260},
+    {x:base.x,y:base.y-260},
+  ];
+  const reserves = reservedRects(stageBox, activeAnchor, 150);
+  return candidates.map((c,i)=>{
+    const rect = {left:c.x-w/2,top:c.y-h/2,right:c.x+w/2,bottom:c.y+h/2};
+    let score = outPenalty(rect, stageBox);
+    reserves.forEach(r=>score += overlapArea(rect,r)*30);
+    if(activePlanetCat==="hair" && i===1) score -= 200000;
+    return {...c,score};
+  }).sort((a,b)=>a.score-b.score)[0];
 }
 
 function syncRenderedCard(k){

@@ -52,19 +52,35 @@
 
   /* ---------- Solar hero ---------- */
   header.hero{
-    min-height:92vh;padding:52px 0 28px;color:#FBF8F1;overflow:hidden;position:relative;
+    min-height:100vh;padding:28px 34px 24px;color:#FBF8F1;overflow:hidden;position:relative;
     background:
-      radial-gradient(circle at 50% 42%, rgba(255,246,218,.28) 0 10%, transparent 28%),
-      radial-gradient(circle at 16% 18%, rgba(244,194,210,.18), transparent 25%),
-      radial-gradient(circle at 82% 18%, rgba(192,199,235,.18), transparent 28%),
-      linear-gradient(145deg,#161833 0%,#241a3e 52%,#2d2348 100%);
+      radial-gradient(ellipse at 50% 46%, rgba(255,212,168,.55), rgba(179,139,220,.2) 23%, transparent 48%),
+      radial-gradient(circle at 17% 24%, rgba(165,160,239,.3), transparent 18%),
+      radial-gradient(circle at 88% 48%, rgba(242,154,178,.24), transparent 18%),
+      linear-gradient(180deg,#070D24 0%,#121B3C 46%,#5D5A93 100%);
   }
   header.hero::before{
     content:"";position:absolute;inset:0;pointer-events:none;opacity:.45;
-    background-image:radial-gradient(circle,#fff 0 1px,transparent 1.6px);
-    background-size:74px 74px;
+    background-image:
+      radial-gradient(circle,#fff 0 1px,transparent 1.6px),
+      radial-gradient(ellipse at 50% 55%, transparent 0 24%, rgba(249,205,151,.45) 24.2% 24.45%, transparent 24.7% 31%, rgba(249,205,151,.32) 31.2% 31.45%, transparent 31.8% 39%, rgba(249,205,151,.24) 39.2% 39.45%, transparent 39.8%);
+    background-size:92px 92px,100% 100%;
   }
-  header.hero .wrap{position:relative;z-index:1;}
+  header.hero::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:34%;
+    background:linear-gradient(180deg,transparent,rgba(245,226,235,.22));
+    pointer-events:none;
+  }
+  .hero-top,.cosmic-stage,.glass-dock,.hero-foot{position:relative;z-index:1;}
+  .hero-top{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  .brand-mark{font-family:"Noto Serif SC",serif;font-size:30px;letter-spacing:.06em;line-height:.92;}
+  .brand-mark span{display:block;font-family:"Noto Sans SC",sans-serif;font-size:11px;letter-spacing:.32em;margin-top:8px;}
+  .top-nav{display:flex;align-items:center;gap:34px;font-size:15px;}
+  .top-nav button,.hero-actions button{border:0;background:transparent;color:#fff;font:inherit;cursor:pointer;padding:8px 0;}
+  .top-nav button[aria-pressed="true"]{border-bottom:1px solid #F3C989;color:#FFF2D6;}
+  .hero-actions{display:flex;align-items:center;gap:14px;}
+  .search-dot{font-size:30px;line-height:1;}
+  .list-pill{border:1px solid rgba(255,255,255,.28)!important;border-radius:999px!important;padding:9px 18px!important;background:rgba(255,255,255,.06)!important;}
   .eyebrow{
     font-size:11px;letter-spacing:.42em;text-transform:uppercase;
     color:#D8D4F0;font-weight:500;margin:0 0 18px;
@@ -80,52 +96,99 @@
     margin:0 0 30px;font-weight:300;
   }
   .lede b{font-weight:500;color:#fff;}
-  .solar-wrap{display:grid;grid-template-columns:minmax(280px,.78fr) minmax(460px,1fr);gap:34px;align-items:center;}
-  .solar-copy{padding-top:12px;}
-  .solar-system{position:relative;min-height:610px;}
+  .cosmic-stage{height:min(690px,calc(100vh - 250px));min-height:520px;margin-top:10px;}
+  .solar-system{position:absolute;inset:0;}
   .sun{
-    position:absolute;left:50%;top:50%;width:176px;height:176px;transform:translate(-50%,-50%);
+    position:absolute;left:50%;top:48%;width:310px;height:310px;transform:translate(-50%,-50%);
     border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;
-    font-family:"Noto Serif SC",serif;font-size:18px;line-height:1.45;color:#5F4D31;
-    background:radial-gradient(circle at 38% 32%,#fff 0,#FFF4CF 38%,#F7C978 72%,#DFA75E 100%);
-    box-shadow:0 0 42px rgba(255,222,154,.52),0 0 110px rgba(245,192,153,.28);
+    font-family:"Noto Serif SC",serif;font-size:36px;line-height:1.25;color:#5F4734;
+    background:
+      radial-gradient(circle at 38% 30%,#fff8e8 0,#FFE5B7 33%,#F5B77F 64%,#E49C68 100%);
+    box-shadow:0 0 54px rgba(255,225,166,.72),0 0 160px rgba(238,168,154,.55);
   }
-  .sun span{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8A6E4A;margin-top:4px;}
+  .sun b{font-weight:500;}
+  .sun span{display:block;font-family:"Noto Sans SC",sans-serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#7B5E4B;margin-top:8px;}
   .orbit{
-    position:absolute;left:50%;top:50%;border:1px solid rgba(255,255,255,.18);border-radius:50%;
-    transform:translate(-50%,-50%);box-shadow:inset 0 0 30px rgba(255,255,255,.03);
+    position:absolute;left:50%;top:48%;border:1px solid rgba(247,197,139,.24);border-radius:50%;
+    transform:translate(-50%,-50%) rotate(-10deg);box-shadow:inset 0 0 30px rgba(255,255,255,.03);
   }
-  .orbit.core{width:300px;height:300px;}
-  .orbit.value{width:430px;height:430px;}
-  .orbit.lux{width:560px;height:560px;}
+  .orbit.core{width:520px;height:230px;}
+  .orbit.value{width:760px;height:350px;}
+  .orbit.lux{width:1040px;height:500px;}
   .planet{
-    --x:50%;--y:50%;--size:74px;--glow:#F4C8D8;
-    position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);
-    transform:translate(-50%,-50%);border:0;border-radius:50%;cursor:pointer;color:#fff;
-    background:radial-gradient(circle at 35% 28%,#fff 0 9%,var(--glow) 38%,rgba(255,255,255,.18) 100%);
-    box-shadow:0 0 28px color-mix(in srgb,var(--glow),transparent 28%),0 12px 34px rgba(0,0,0,.18);
-    animation:float 8s ease-in-out infinite;transition:transform .25s,box-shadow .25s;
+    --x:50%;--y:50%;--size:126px;--glow:#F4C8D8;
+    position:absolute;left:var(--x);top:var(--y);width:250px;min-height:150px;
+    transform:translate(-50%,-50%);border:0;cursor:pointer;color:#fff;background:transparent;text-align:left;
+    transition:transform .25s,box-shadow .25s;
   }
-  .planet:hover,.planet:focus-visible{transform:translate(-50%,-50%) scale(1.07);outline:none;}
-  .planet small{
-    position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);
-    min-width:82px;color:#F8F4F8;font-size:12px;letter-spacing:.08em;text-shadow:0 2px 8px rgba(0,0,0,.45);
+  .planet:hover,.planet:focus-visible{transform:translate(-50%,-50%) scale(1.03);outline:none;}
+  .planet-orb{
+    position:absolute;left:0;top:0;width:var(--size);height:var(--size);border-radius:50%;
+    background:
+      radial-gradient(circle at 33% 24%,#fff 0 7%,rgba(255,255,255,.82) 8%,var(--glow) 39%,rgba(83,78,142,.72) 100%);
+    box-shadow:0 0 34px color-mix(in srgb,var(--glow),transparent 20%),inset -18px -20px 38px rgba(24,19,66,.28);
+    animation:float 8s ease-in-out infinite;
   }
   .planet .ring{
-    position:absolute;inset:-9px;border:1px solid rgba(255,255,255,.28);border-radius:50%;
+    position:absolute;inset:14px -10px;border:1px solid rgba(255,255,255,.26);border-radius:50%;
     transform:rotate(-18deg) scaleX(1.42);
   }
-  .planet[data-cat="skincare"]{--x:50%;--y:25%;--glow:#DDEEDC;--size:82px;animation-delay:-1s;}
-  .planet[data-cat="makeup"]{--x:75%;--y:37%;--glow:#F0B8C9;--size:78px;animation-delay:-2s;}
-  .planet[data-cat="hair"]{--x:76%;--y:64%;--glow:#D8C7F0;--size:70px;animation-delay:-3s;}
-  .planet[data-cat="body"]{--x:50%;--y:78%;--glow:#EFE1C7;--size:76px;animation-delay:-4s;}
-  .planet[data-cat="scent"]{--x:24%;--y:64%;--glow:#C7D4EF;--size:70px;animation-delay:-5s;}
-  .planet[data-cat="oral"]{--x:25%;--y:37%;--glow:#D9F0F0;--size:64px;animation-delay:-6s;}
-  .planet[data-cat="tools"]{--x:50%;--y:7%;--glow:#E5E7F5;--size:62px;animation-delay:-7s;}
-  .orbit-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;color:#DCD8E7;font-size:12px;}
-  .orbit-legend span{border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:5px 10px;background:rgba(255,255,255,.07);}
+  .planet-copy{position:absolute;left:140px;top:28px;width:160px;text-shadow:0 2px 14px rgba(0,0,0,.45);}
+  .planet-copy b{display:block;font-family:"Noto Serif SC",serif;font-size:25px;font-weight:600;line-height:1.05;}
+  .planet-copy em{display:block;font-family:"Noto Serif SC",serif;font-style:normal;font-size:13px;letter-spacing:.12em;margin-top:4px;text-transform:uppercase;}
+  .planet-copy span{display:block;font-size:13px;line-height:1.7;color:#E8E2EF;margin-top:8px;}
+  .planet-copy i{
+    display:grid;place-items:center;width:34px;height:34px;border-radius:50%;margin-top:10px;font-style:normal;color:#5B506F;
+    background:rgba(255,255,255,.82);box-shadow:0 0 18px rgba(255,255,255,.5);
+  }
+  .planet[data-cat="skincare"]{--x:21%;--y:17%;--glow:#BEB2F3;--size:134px;animation-delay:-1s;}
+  .planet[data-cat="makeup"]{--x:68%;--y:18%;--glow:#EEB2C4;--size:128px;animation-delay:-2s;}
+  .planet[data-cat="hair"]{--x:86%;--y:43%;--glow:#E58786;--size:116px;animation-delay:-3s;}
+  .planet[data-cat="body"]{--x:13%;--y:48%;--glow:#9DBDE8;--size:118px;animation-delay:-4s;}
+  .planet[data-cat="scent"]{--x:27%;--y:75%;--glow:#D9A7EA;--size:122px;animation-delay:-5s;}
+  .planet[data-cat="oral"]{--x:48%;--y:80%;--glow:#AFC5EA;--size:92px;animation-delay:-6s;}
+  .planet[data-cat="tools"]{--x:69%;--y:76%;--glow:#C7D7F5;--size:128px;animation-delay:-7s;}
+  .planet[data-cat="hair"] .planet-copy,.planet[data-cat="tools"] .planet-copy{left:132px;}
+  .planet[data-cat="body"] .planet-copy,.planet[data-cat="scent"] .planet-copy{left:132px;}
+  .planet[data-cat="skincare"] .planet-orb{animation-delay:-1s;}
+  .planet[data-cat="makeup"] .planet-orb{animation-delay:-2s;}
+  .planet[data-cat="hair"] .planet-orb{animation-delay:-3s;}
+  .planet[data-cat="body"] .planet-orb{animation-delay:-4s;}
+  .planet[data-cat="scent"] .planet-orb{animation-delay:-5s;}
+  .planet[data-cat="oral"] .planet-orb{animation-delay:-6s;}
+  .planet[data-cat="tools"] .planet-orb{animation-delay:-7s;}
+  .orbit-legend{position:absolute;left:4px;bottom:56px;display:grid;gap:9px;color:#F7F2FB;font-size:13px;}
+  .orbit-legend strong{font-family:"Noto Serif SC",serif;font-size:16px;font-weight:500;margin-bottom:2px;}
+  .orbit-legend span{display:flex;align-items:center;gap:9px;}
+  .orbit-legend span::before{content:"";width:13px;height:13px;border-radius:50%;border:1px solid rgba(255,255,255,.75);box-shadow:0 0 10px rgba(255,255,255,.25);}
+  .orbit-legend span:first-of-type::before{background:#F3C989;border-color:#F3C989;}
+  .hero-quote{position:absolute;right:6px;bottom:52px;width:245px;margin:0;color:#F2EDF7;font-family:"Noto Serif SC",serif;font-size:16px;line-height:1.8;text-shadow:0 2px 12px rgba(0,0,0,.38);}
+  .hero-quote::before{content:"“";display:block;font-size:42px;line-height:.6;}
+  .hero-quote cite{display:block;margin-top:12px;text-align:right;font-style:italic;}
+  .glass-dock{
+    display:grid;grid-template-columns:1.15fr .85fr .85fr 1.15fr;overflow:hidden;
+    border:1px solid rgba(255,255,255,.34);border-radius:10px;background:rgba(255,248,253,.72);
+    color:#423B5F;box-shadow:0 20px 60px rgba(30,25,68,.24);backdrop-filter:blur(18px);
+  }
+  .dock-cell{padding:22px 26px;border-right:1px solid rgba(74,66,110,.22);min-height:138px;}
+  .dock-cell:last-child{border-right:0;}
+  .dock-title{font-size:14px;color:#665D83;margin-bottom:12px;}
+  .daily-inspo{display:flex;gap:20px;align-items:center;}
+  .daily-inspo img{width:112px;height:76px;object-fit:cover;border-radius:6px;background:#E8DADE;}
+  .daily-inspo p{margin:0;font-family:"Noto Serif SC",serif;font-size:14px;line-height:1.8;}
+  .progress-mini{display:flex;align-items:center;gap:22px;}
+  .progress-ring{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#737DB4 calc(var(--p)*1%),rgba(115,125,180,.18) 0);}
+  .progress-ring span{display:grid;place-items:center;width:61px;height:61px;border-radius:50%;background:#F6EEF4;font-family:"Noto Serif SC",serif;font-size:21px;}
+  .progress-mini dl{display:grid;grid-template-columns:auto auto;gap:7px 22px;margin:0;font-size:13px;}
+  .progress-mini dd{margin:0;text-align:right;}
+  .keyword-pills{display:flex;flex-wrap:wrap;gap:10px;}
+  .keyword-pills span{border:1px solid rgba(77,69,112,.18);border-radius:999px;padding:7px 17px;background:rgba(255,255,255,.42);font-size:13px;}
+  .recent-row{display:flex;gap:12px;}
+  .recent-row img{width:70px;height:70px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,.5);padding:6px;}
+  .hero-foot{display:flex;justify-content:space-between;margin:18px 22px 0;color:#E8E2EF;font-size:13px;}
+  .hero-foot span{margin-right:28px;}
   @keyframes float{0%,100%{margin-top:0}50%{margin-top:-10px}}
-  .stats{display:flex;gap:30px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.18);padding-top:22px;}
+  .stats{display:flex;gap:30px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.18);padding-top:18px;}
   .stat .n{font-family:"Noto Serif SC",serif;font-size:30px;font-weight:600;line-height:1;}
   .stat .l{font-size:12px;color:#DCD8E7;letter-spacing:.06em;margin-top:6px;}
 
@@ -242,18 +305,33 @@
   }
 
   @media (max-width:600px){
-    header.hero{min-height:auto;padding:44px 0 30px;}
-    .solar-wrap{display:block;}
-    .solar-system{min-height:0;display:flex;gap:13px;overflow-x:auto;padding:18px 4px 24px;margin:0 -4px;scroll-snap-type:x mandatory;}
-    .sun,.orbit{display:none;}
+    header.hero{min-height:auto;padding:24px 18px 24px;}
+    .hero-top{display:block;}
+    .brand-mark{font-size:27px;margin-bottom:16px;}
+    .top-nav{gap:18px;overflow-x:auto;padding-bottom:8px;margin:0 -2px;font-size:14px;}
+    .hero-actions{position:absolute;right:18px;top:26px;}
+    .search-dot{display:none;}
+    .list-pill{padding:7px 13px!important;font-size:13px!important;}
+    .cosmic-stage{height:auto;min-height:0;margin-top:22px;}
+    .solar-system{position:relative;min-height:0;display:flex;gap:13px;overflow-x:auto;padding:182px 4px 24px;margin:0 -4px;scroll-snap-type:x mandatory;}
+    .sun{display:flex;width:154px;height:154px;top:78px;left:50%;font-size:21px;}
+    .sun span{font-size:10px;letter-spacing:.12em;}
+    .orbit,.orbit-legend,.hero-quote{display:none;}
     .planet{
       position:relative;left:auto!important;top:auto!important;transform:none!important;flex:0 0 132px;height:132px;
       border-radius:22px;scroll-snap-align:start;background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.08));
       box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 16px 34px rgba(0,0,0,.18);animation:none;
     }
-    .planet::before{content:"";position:absolute;left:34px;top:24px;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#fff 0 9%,var(--glow) 38%,rgba(255,255,255,.18) 100%);box-shadow:0 0 24px color-mix(in srgb,var(--glow),transparent 30%);}
-    .planet small{top:92px;color:#fff;min-width:0;width:100%;font-size:13px;}
-    .planet .ring{inset:20px 38px auto 25px;height:58px;}
+    .planet-orb{left:36px;top:18px;width:62px;height:62px;animation:none;}
+    .planet .ring{inset:8px -5px;}
+    .planet-copy{left:0;top:88px;width:100%;text-align:center;}
+    .planet-copy b{font-size:14px;}
+    .planet-copy em,.planet-copy span,.planet-copy i{display:none;}
+    .glass-dock{display:block;border-radius:12px;margin-top:0;}
+    .dock-cell{border-right:0;border-bottom:1px solid rgba(74,66,110,.18);min-height:0;padding:18px;}
+    .dock-cell:last-child{border-bottom:0;}
+    .daily-inspo img{width:88px;height:68px;}
+    .hero-foot{display:none;}
     .grid{grid-template-columns:1fr 1fr;gap:11px;}
     .thumb .mono{width:50px;height:50px;font-size:26px;}
     .name{font-size:14px;}
@@ -266,31 +344,73 @@
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
     .card{opacity:1;transform:none;transition:none;}
-    .planet{animation:none;}
+    .planet,.planet-orb{animation:none;}
   }
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <div class="wrap solar-wrap">
-    <div class="solar-copy">
-      <p class="eyebrow">Beauty Solar System</p>
-      <h1 class="title">透明感宇宙<br><span class="thin">Your Beauty Universe</span></h1>
-      <p class="lede">把「日本女人感」拆成七颗温柔行星：护肤、彩妆、头发、身体、香氛、口腔、仪器。沿着<b>内轨基础</b>、<b>中轨提升</b>、<b>外轨锦上添花</b>慢慢补齐，不需要一次买完。</p>
-      <div class="stats" id="stats"></div>
-      <div class="orbit-legend" aria-label="优先级轨道说明">
-        <span>内轨 = 必买基础</span>
-        <span>中轨 = 明显提升</span>
-        <span>外轨 = 锦上添花</span>
-      </div>
+  <div class="hero-top">
+    <div class="brand-mark">SNOWQIN<span>BEAUTY UNIVERSE</span></div>
+    <nav class="top-nav" aria-label="主导航">
+      <button type="button" data-cat="all" aria-pressed="true">首页</button>
+      <button type="button" data-cat="skincare">护肤</button>
+      <button type="button" data-cat="makeup">彩妆</button>
+      <button type="button" data-cat="hair">头发</button>
+      <button type="button" data-cat="body">身体</button>
+      <button type="button" data-cat="scent">香氛</button>
+      <button type="button" data-cat="oral">口腔</button>
+      <button type="button" data-cat="tools">美容仪器</button>
+    </nav>
+    <div class="hero-actions">
+      <button class="search-dot" type="button" aria-label="搜索">⌕</button>
+      <button class="list-pill" type="button" id="heroListBtn">我的清单 ♡</button>
     </div>
+  </div>
+  <div class="cosmic-stage">
     <div class="solar-system" id="solarNav" aria-label="分类星球导航">
       <div class="orbit core"></div>
       <div class="orbit value"></div>
       <div class="orbit lux"></div>
-      <div class="sun">透明感清单<span>Your Beauty Universe</span></div>
+      <div class="sun"><div><b>透明感清单</b><span>Your Beauty Universe</span></div></div>
+      <div class="orbit-legend" aria-label="优先级轨道说明">
+        <strong>优先级轨道</strong>
+        <span>内轨 · 必买基础</span>
+        <span>中轨 · 明显提升</span>
+        <span>外轨 · 锦上添花</span>
+      </div>
+      <blockquote class="hero-quote">变美不是一蹴而就，而是星球运转般的长期主义。<cite>Snow Qin</cite></blockquote>
     </div>
+  </div>
+  <div class="glass-dock" aria-label="清单概览">
+    <div class="dock-cell daily-inspo">
+      <img src="https://murasakicosmetics.com/cdn/shop/products/Anessa-Sunscreen-Milk-Spf50.jpg?v=1655670181" alt="">
+      <div><div class="dock-title">今日灵感</div><p>皮肤的透明感，来自于稳定的日常积累。</p></div>
+    </div>
+    <div class="dock-cell">
+      <div class="dock-title">我的清单进度</div>
+      <div class="progress-mini">
+        <div class="progress-ring" id="heroProgress" style="--p:0"><span>0%</span></div>
+        <dl><dt>已买</dt><dd id="doneCount">0</dd><dt>想买</dt><dd id="wishCount">0</dd><dt>待定</dt><dd>12</dd></dl>
+      </div>
+    </div>
+    <div class="dock-cell">
+      <div class="dock-title">高频关键词</div>
+      <div class="keyword-pills"><span>保湿</span><span>美白</span><span>修护</span><span>防晒</span><span>抗初老</span><span>维稳</span></div>
+    </div>
+    <div class="dock-cell">
+      <div class="dock-title">最近查看</div>
+      <div class="recent-row">
+        <img src="https://murasakicosmetics.com/cdn/shop/products/Anessa-Sunscreen-Milk-Spf50.jpg?v=1655670181" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0419/5447/6194/files/CEF-1.png?v=1773134867" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0283/0185/2747/files/variant_images-size-PillowTalkFair-5056446634243-47.jpg?v=1769555487" alt="">
+      </div>
+    </div>
+  </div>
+  <div class="hero-foot">
+    <div><span>♡ 我的收藏</span><span>✓ 只看未买</span><span>☆ 优先级排序</span></div>
+    <div>让变美成为一种生活方式</div>
   </div>
 </header>
 
@@ -337,6 +457,15 @@ const CATS = [
   {id:"inner",    zh:"内服", en:"Inner Beauty"},
 ];
 const PLANETS = ["skincare","makeup","hair","body","scent","oral","tools"];
+const PLANET_META = {
+  skincare:{star:"护肤星",en:"Skincare",desc:"洁面 / 精华 / 面霜<br>防晒 / 面膜 / 修护"},
+  makeup:{star:"彩妆星",en:"Makeup",desc:"底妆 / 眼妆 / 唇妆<br>腮红 / 定妆 / 工具"},
+  hair:{star:"头发星",en:"Hair Care",desc:"洗发 / 护发 / 修护<br>造型 / 头皮护理"},
+  body:{star:"身体星",en:"Body Care",desc:"身体护理 / 沐浴<br>脱毛 / 防晒 / 体香"},
+  scent:{star:"香氛星",en:"Fragrance",desc:"香水 / 护体香<br>香氛护理 / 氛围"},
+  oral:{star:"口腔星",en:"Oral Care",desc:"牙膏 / 漱口水<br>口腔护理 / 口气管理"},
+  tools:{star:"仪器星",en:"Beauty Devices",desc:"美容仪 / 导入导出<br>LED / 脱毛仪"},
+};
 const TIERS = {
   core:  {zh:"内轨 · 必买基础", cls:"core"},
   value: {zh:"中轨 · 明显提升", cls:"value"},
@@ -623,6 +752,7 @@ function imgFail(img){
 function setCategory(cat){
   state.cat = cat;
   document.querySelectorAll('.chip[data-group="cat"]').forEach(x=>x.setAttribute("aria-pressed", x.dataset.val===cat ? "true" : "false"));
+  document.querySelectorAll(".top-nav button").forEach(x=>x.setAttribute("aria-pressed", x.dataset.cat===cat ? "true" : "false"));
   document.querySelectorAll(".planet").forEach(x=>x.setAttribute("aria-pressed", x.dataset.cat===cat ? "true" : "false"));
   render();
   document.getElementById("sections").scrollIntoView({behavior:"smooth", block:"start"});
@@ -637,9 +767,18 @@ function buildSolar(){
     btn.type = "button";
     btn.dataset.cat = c.id;
     btn.setAttribute("aria-label", `${c.zh}，${count} 件产品`);
-    btn.innerHTML = `<span class="ring"></span><small>${c.zh}</small>`;
+    const m = PLANET_META[c.id];
+    btn.innerHTML = `<span class="planet-orb"><span class="ring"></span></span><span class="planet-copy"><b>${m.star}</b><em>${m.en}</em><span>${m.desc}</span><i>→</i></span>`;
     btn.addEventListener("click",()=>setCategory(c.id));
     nav.appendChild(btn);
+  });
+  document.querySelectorAll(".top-nav button").forEach(btn=>{
+    btn.addEventListener("click",()=>setCategory(btn.dataset.cat));
+  });
+  document.getElementById("heroListBtn").addEventListener("click",()=>{
+    state.unboughtOnly = false;
+    document.getElementById("unboughtToggle").setAttribute("aria-pressed","false");
+    setCategory("all");
   });
 }
 
@@ -767,6 +906,7 @@ document.getElementById("search").addEventListener("input",(e)=>{
 /* stats */
 function stats(){
   const el=document.getElementById("stats");
+  if(!el) return;
   const core = PRODUCTS.filter(p=>p.tier==="core").length;
   const data=[[PRODUCTS.length,"件精选产品"],[PLANETS.length,"颗导航行星"],[core,"件必买基础"]];
   el.innerHTML = data.map(d=>`<div class="stat"><div class="n">${d[0]}</div><div class="l">${d[1]}</div></div>`).join("")
@@ -777,9 +917,18 @@ function stats(){
 /* 已入手进度，随勾选实时更新 */
 function updateProgress(){
   const el=document.getElementById("progStat");
-  if(!el) return;
   const have = PRODUCTS.reduce((n,p)=> n + (isBought(p)?1:0), 0);
-  el.innerHTML = `<div class="n">${have} / ${PRODUCTS.length}</div><div class="l">已入手 / 共</div>`;
+  if(el) el.innerHTML = `<div class="n">${have} / ${PRODUCTS.length}</div><div class="l">已入手 / 共</div>`;
+  const pct = Math.round(have / PRODUCTS.length * 100);
+  const ring = document.getElementById("heroProgress");
+  if(ring){
+    ring.style.setProperty("--p", pct);
+    ring.querySelector("span").textContent = pct + "%";
+  }
+  const done = document.getElementById("doneCount");
+  const wish = document.getElementById("wishCount");
+  if(done) done.textContent = have;
+  if(wish) wish.textContent = PRODUCTS.length - have;
 }
 
 /* 「只看未买」开关 */

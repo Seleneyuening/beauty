@@ -183,23 +183,25 @@
   .hero-foot{display:flex;justify-content:space-between;margin:18px 22px 0;color:#E8E2EF;font-size:13px;}
   .hero-foot span{margin-right:28px;}
   .product-orbit{
-    position:absolute;left:var(--orbit-x,50%);top:var(--orbit-y,50%);width:320px;height:240px;transform:translate(-50%,-50%);
+    position:absolute;left:var(--orbit-x,50%);top:var(--orbit-y,50%);width:128px;
+    display:grid;gap:8px;transform:translate(var(--orbit-shift-x,-120px),var(--orbit-shift-y,70px));
     pointer-events:none;opacity:0;transition:opacity .28s ease;
   }
   .product-orbit.show{opacity:1;}
   .floating-product{
-    --a:0deg;--r:1;
-    position:absolute;left:50%;top:50%;width:56px;padding:0;border:0;background:transparent;
+    display:grid;grid-template-columns:30px 1fr;align-items:center;gap:7px;width:128px;padding:0;border:0;background:transparent;
     color:rgba(255,250,255,.82);text-shadow:0 2px 12px rgba(14,12,40,.55);pointer-events:auto;cursor:pointer;
-    transform:translate(-50%,-50%) rotate(var(--a)) translateX(calc(126px * var(--r))) rotate(calc(-1 * var(--a)));
     opacity:.76;transition:transform .25s ease,opacity .25s ease;
   }
-  .floating-product:hover{opacity:.94;transform:translate(-50%,-50%) rotate(var(--a)) translateX(calc(126px * var(--r))) rotate(calc(-1 * var(--a))) translateY(-5px);}
-  .floating-product img{width:18px;height:18px;object-fit:contain;filter:drop-shadow(0 5px 10px rgba(12,10,34,.34));}
-  .floating-product b{display:block;margin-top:5px;font-size:10px;line-height:1.25;font-weight:500;}
+  .floating-product:hover{opacity:.94;transform:translateY(-3px);}
+  .floating-product img{
+    width:30px;height:30px;object-fit:contain;mix-blend-mode:multiply;
+    filter:drop-shadow(0 5px 10px rgba(12,10,34,.34));
+  }
+  .floating-product b{display:block;font-size:10px;line-height:1.25;font-weight:500;text-align:left;}
   .floating-product.more-product{
-    display:grid;place-items:center;min-height:42px;border-radius:999px;background:rgba(255,255,255,.16);
-    font-family:"Noto Serif SC",serif;font-size:12px;line-height:1.35;backdrop-filter:blur(10px);
+    display:block;width:70px;margin-left:37px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.42);
+    font-family:"Noto Serif SC",serif;font-size:12px;line-height:1.35;text-align:left;
   }
   @keyframes float{0%,100%{margin-top:0}50%{margin-top:-10px}}
   .stats{display:flex;gap:30px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.18);padding-top:18px;}
@@ -344,7 +346,7 @@
     .glass-dock{display:block;border-radius:12px;margin-top:0;}
     .product-orbit{position:relative;left:auto;top:auto;transform:none;width:auto;height:auto;display:flex;gap:10px;overflow-x:auto;padding:0 4px 18px;opacity:1;}
     .product-orbit:not(.show){display:none;}
-    .floating-product{position:relative;left:auto;top:auto;transform:none!important;flex:0 0 58px;}
+    .floating-product{position:relative;left:auto;top:auto;transform:none!important;flex:0 0 98px;width:98px;grid-template-columns:30px 1fr;}
     .dock-cell{border-right:0;border-bottom:1px solid rgba(74,66,110,.18);min-height:0;padding:18px;}
     .dock-cell:last-child{border-bottom:0;}
     .daily-inspo img{width:88px;height:68px;}
@@ -787,6 +789,18 @@ function positionProductOrbit(anchor){
   const orbBox = orb.getBoundingClientRect();
   orbit.style.setProperty("--orbit-x", `${orbBox.left - stageBox.left + orbBox.width / 2}px`);
   orbit.style.setProperty("--orbit-y", `${orbBox.top - stageBox.top + orbBox.height / 2}px`);
+  const offsets = {
+    skincare:[-112,76],
+    makeup:[-154,68],
+    hair:[-154,-70],
+    body:[-78,-112],
+    scent:[-102,-148],
+    oral:[-154,-122],
+    tools:[-154,-126]
+  };
+  const [x,y] = offsets[anchor?.dataset.cat] || [-120,70];
+  orbit.style.setProperty("--orbit-shift-x", `${x}px`);
+  orbit.style.setProperty("--orbit-shift-y", `${y}px`);
 }
 
 function showFloatingProducts(cat, anchor){
@@ -795,30 +809,17 @@ function showFloatingProducts(cat, anchor){
   const categoryItems = PRODUCTS.filter(p=>p.cat===cat);
   const items = categoryItems.filter(p=>p.img).slice(0,5);
   positionProductOrbit(anchor);
-  const angles = productArcAngles(anchor).slice(0,items.length);
   const cards = items.map((p,i)=>{
-    const angle = angles[i];
-    const radius = i % 2 ? .9 : 1;
-    return `<button class="floating-product" type="button" style="--a:${angle}deg;--r:${radius}" data-key="${keyOf(p)}">
+    return `<button class="floating-product" type="button" data-key="${keyOf(p)}">
       <img src="${p.img}" alt="${p.brand} ${p.name}" onerror="this.closest('button').remove()">
       <b>${p.name}</b>
     </button>`;
   });
   if(categoryItems.length>items.length){
-    cards.push(`<button class="floating-product more-product" type="button" style="--a:${productArcAngles(anchor)[5]}deg;--r:.84" data-action="all">查看<br>全部</button>`);
+    cards.push(`<button class="floating-product more-product" type="button" data-action="all">查看全部</button>`);
   }
   orbit.innerHTML = cards.join("");
   orbit.classList.toggle("show", cards.length>0);
-}
-
-function productArcAngles(anchor){
-  const stage = document.getElementById("solarNav").getBoundingClientRect();
-  const orb = anchor?.querySelector(".planet-orb")?.getBoundingClientRect();
-  if(!orb) return [-70,-35,0,35,70,105];
-  const x = (orb.left + orb.width / 2 - stage.left) / stage.width;
-  const y = (orb.top + orb.height / 2 - stage.top) / stage.height;
-  if(y > .62 && x > .34 && x < .76) return [-170,-135,-100,-65,-30,5];
-  return x > .55 ? [110,145,180,215,250,285] : [-70,-35,0,35,70,105];
 }
 
 function buildSolar(){

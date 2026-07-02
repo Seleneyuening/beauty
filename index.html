@@ -50,26 +50,84 @@
 
   .wrap{max-width:1120px;margin:0 auto;padding:0 22px;}
 
-  /* ---------- Hero ---------- */
-  header.hero{padding:72px 0 34px;}
+  /* ---------- Solar hero ---------- */
+  header.hero{
+    min-height:92vh;padding:52px 0 28px;color:#FBF8F1;overflow:hidden;position:relative;
+    background:
+      radial-gradient(circle at 50% 42%, rgba(255,246,218,.28) 0 10%, transparent 28%),
+      radial-gradient(circle at 16% 18%, rgba(244,194,210,.18), transparent 25%),
+      radial-gradient(circle at 82% 18%, rgba(192,199,235,.18), transparent 28%),
+      linear-gradient(145deg,#161833 0%,#241a3e 52%,#2d2348 100%);
+  }
+  header.hero::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.45;
+    background-image:radial-gradient(circle,#fff 0 1px,transparent 1.6px);
+    background-size:74px 74px;
+  }
+  header.hero .wrap{position:relative;z-index:1;}
   .eyebrow{
     font-size:11px;letter-spacing:.42em;text-transform:uppercase;
-    color:var(--water);font-weight:500;margin:0 0 18px;
+    color:#D8D4F0;font-weight:500;margin:0 0 18px;
   }
   h1.title{
     font-family:"Noto Serif SC",serif;font-weight:600;
     font-size:clamp(38px,7vw,68px);line-height:1.08;letter-spacing:.01em;
     margin:0 0 22px;
   }
-  h1.title .thin{font-weight:400;color:var(--ink-soft);}
+  h1.title .thin{font-weight:400;color:#F5DCE8;}
   .lede{
-    max-width:640px;font-size:clamp(15px,2.2vw,17px);color:var(--ink-soft);
+    max-width:640px;font-size:clamp(15px,2.2vw,17px);color:#DCD8E7;
     margin:0 0 30px;font-weight:300;
   }
-  .lede b{font-weight:500;color:var(--ink);}
-  .stats{display:flex;gap:30px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:22px;}
+  .lede b{font-weight:500;color:#fff;}
+  .solar-wrap{display:grid;grid-template-columns:minmax(280px,.78fr) minmax(460px,1fr);gap:34px;align-items:center;}
+  .solar-copy{padding-top:12px;}
+  .solar-system{position:relative;min-height:610px;}
+  .sun{
+    position:absolute;left:50%;top:50%;width:176px;height:176px;transform:translate(-50%,-50%);
+    border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;
+    font-family:"Noto Serif SC",serif;font-size:18px;line-height:1.45;color:#5F4D31;
+    background:radial-gradient(circle at 38% 32%,#fff 0,#FFF4CF 38%,#F7C978 72%,#DFA75E 100%);
+    box-shadow:0 0 42px rgba(255,222,154,.52),0 0 110px rgba(245,192,153,.28);
+  }
+  .sun span{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8A6E4A;margin-top:4px;}
+  .orbit{
+    position:absolute;left:50%;top:50%;border:1px solid rgba(255,255,255,.18);border-radius:50%;
+    transform:translate(-50%,-50%);box-shadow:inset 0 0 30px rgba(255,255,255,.03);
+  }
+  .orbit.core{width:300px;height:300px;}
+  .orbit.value{width:430px;height:430px;}
+  .orbit.lux{width:560px;height:560px;}
+  .planet{
+    --x:50%;--y:50%;--size:74px;--glow:#F4C8D8;
+    position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);
+    transform:translate(-50%,-50%);border:0;border-radius:50%;cursor:pointer;color:#fff;
+    background:radial-gradient(circle at 35% 28%,#fff 0 9%,var(--glow) 38%,rgba(255,255,255,.18) 100%);
+    box-shadow:0 0 28px color-mix(in srgb,var(--glow),transparent 28%),0 12px 34px rgba(0,0,0,.18);
+    animation:float 8s ease-in-out infinite;transition:transform .25s,box-shadow .25s;
+  }
+  .planet:hover,.planet:focus-visible{transform:translate(-50%,-50%) scale(1.07);outline:none;}
+  .planet small{
+    position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);
+    min-width:82px;color:#F8F4F8;font-size:12px;letter-spacing:.08em;text-shadow:0 2px 8px rgba(0,0,0,.45);
+  }
+  .planet .ring{
+    position:absolute;inset:-9px;border:1px solid rgba(255,255,255,.28);border-radius:50%;
+    transform:rotate(-18deg) scaleX(1.42);
+  }
+  .planet[data-cat="skincare"]{--x:50%;--y:25%;--glow:#DDEEDC;--size:82px;animation-delay:-1s;}
+  .planet[data-cat="makeup"]{--x:75%;--y:37%;--glow:#F0B8C9;--size:78px;animation-delay:-2s;}
+  .planet[data-cat="hair"]{--x:76%;--y:64%;--glow:#D8C7F0;--size:70px;animation-delay:-3s;}
+  .planet[data-cat="body"]{--x:50%;--y:78%;--glow:#EFE1C7;--size:76px;animation-delay:-4s;}
+  .planet[data-cat="scent"]{--x:24%;--y:64%;--glow:#C7D4EF;--size:70px;animation-delay:-5s;}
+  .planet[data-cat="oral"]{--x:25%;--y:37%;--glow:#D9F0F0;--size:64px;animation-delay:-6s;}
+  .planet[data-cat="tools"]{--x:50%;--y:7%;--glow:#E5E7F5;--size:62px;animation-delay:-7s;}
+  .orbit-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;color:#DCD8E7;font-size:12px;}
+  .orbit-legend span{border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:5px 10px;background:rgba(255,255,255,.07);}
+  @keyframes float{0%,100%{margin-top:0}50%{margin-top:-10px}}
+  .stats{display:flex;gap:30px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.18);padding-top:22px;}
   .stat .n{font-family:"Noto Serif SC",serif;font-size:30px;font-weight:600;line-height:1;}
-  .stat .l{font-size:12px;color:var(--ink-soft);letter-spacing:.06em;margin-top:6px;}
+  .stat .l{font-size:12px;color:#DCD8E7;letter-spacing:.06em;margin-top:6px;}
 
   /* ---------- Controls ---------- */
   .controls{
@@ -184,7 +242,18 @@
   }
 
   @media (max-width:600px){
-    header.hero{padding:54px 0 26px;}
+    header.hero{min-height:auto;padding:44px 0 30px;}
+    .solar-wrap{display:block;}
+    .solar-system{min-height:0;display:flex;gap:13px;overflow-x:auto;padding:18px 4px 24px;margin:0 -4px;scroll-snap-type:x mandatory;}
+    .sun,.orbit{display:none;}
+    .planet{
+      position:relative;left:auto!important;top:auto!important;transform:none!important;flex:0 0 132px;height:132px;
+      border-radius:22px;scroll-snap-align:start;background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.08));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 16px 34px rgba(0,0,0,.18);animation:none;
+    }
+    .planet::before{content:"";position:absolute;left:34px;top:24px;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#fff 0 9%,var(--glow) 38%,rgba(255,255,255,.18) 100%);box-shadow:0 0 24px color-mix(in srgb,var(--glow),transparent 30%);}
+    .planet small{top:92px;color:#fff;min-width:0;width:100%;font-size:13px;}
+    .planet .ring{inset:20px 38px auto 25px;height:58px;}
     .grid{grid-template-columns:1fr 1fr;gap:11px;}
     .thumb .mono{width:50px;height:50px;font-size:26px;}
     .name{font-size:14px;}
@@ -197,17 +266,31 @@
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
     .card{opacity:1;transform:none;transition:none;}
+    .planet{animation:none;}
   }
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <div class="wrap">
-    <p class="eyebrow">A Curated Beauty Directory</p>
-    <h1 class="title">透明感清单<br><span class="thin">变美产品全集</span></h1>
-    <p class="lede">为「日本女人感」整理的一套完整产品——护肤、彩妆、头发、身体、香氛、口腔到仪器，按<b>品类</b>和<b>优先级</b>排好。真正的关键从来不是买更多，而是把<b>先买的这几样用满三个月</b>。</p>
-    <div class="stats" id="stats"></div>
+  <div class="wrap solar-wrap">
+    <div class="solar-copy">
+      <p class="eyebrow">Beauty Solar System</p>
+      <h1 class="title">透明感宇宙<br><span class="thin">Your Beauty Universe</span></h1>
+      <p class="lede">把「日本女人感」拆成七颗温柔行星：护肤、彩妆、头发、身体、香氛、口腔、仪器。沿着<b>内轨基础</b>、<b>中轨提升</b>、<b>外轨锦上添花</b>慢慢补齐，不需要一次买完。</p>
+      <div class="stats" id="stats"></div>
+      <div class="orbit-legend" aria-label="优先级轨道说明">
+        <span>内轨 = 必买基础</span>
+        <span>中轨 = 明显提升</span>
+        <span>外轨 = 锦上添花</span>
+      </div>
+    </div>
+    <div class="solar-system" id="solarNav" aria-label="分类星球导航">
+      <div class="orbit core"></div>
+      <div class="orbit value"></div>
+      <div class="orbit lux"></div>
+      <div class="sun">透明感清单<span>Your Beauty Universe</span></div>
+    </div>
   </div>
 </header>
 
@@ -253,10 +336,11 @@ const CATS = [
   {id:"tools",    zh:"仪器 / 工具", en:"Devices"},
   {id:"inner",    zh:"内服", en:"Inner Beauty"},
 ];
+const PLANETS = ["skincare","makeup","hair","body","scent","oral","tools"];
 const TIERS = {
-  core:  {zh:"必买地基", cls:"core"},
-  value: {zh:"高性价比", cls:"value"},
-  lux:   {zh:"奢华天花板", cls:"lux"},
+  core:  {zh:"内轨 · 必买基础", cls:"core"},
+  value: {zh:"中轨 · 明显提升", cls:"value"},
+  lux:   {zh:"外轨 · 锦上添花", cls:"lux"},
 };
 
 /* 细类分组：每个大类下的功能小类 + 一句功能说明 */
@@ -536,6 +620,29 @@ function imgFail(img){
   if(thumb) thumb.innerHTML = placeholderHTML(img.getAttribute("data-mono-brand")||"");
 }
 
+function setCategory(cat){
+  state.cat = cat;
+  document.querySelectorAll('.chip[data-group="cat"]').forEach(x=>x.setAttribute("aria-pressed", x.dataset.val===cat ? "true" : "false"));
+  document.querySelectorAll(".planet").forEach(x=>x.setAttribute("aria-pressed", x.dataset.cat===cat ? "true" : "false"));
+  render();
+  document.getElementById("sections").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function buildSolar(){
+  const nav = document.getElementById("solarNav");
+  PLANETS.map(id=>CATS.find(c=>c.id===id)).filter(Boolean).forEach(c=>{
+    const count = PRODUCTS.filter(p=>p.cat===c.id).length;
+    const btn = document.createElement("button");
+    btn.className = "planet";
+    btn.type = "button";
+    btn.dataset.cat = c.id;
+    btn.setAttribute("aria-label", `${c.zh}，${count} 件产品`);
+    btn.innerHTML = `<span class="ring"></span><small>${c.zh}</small>`;
+    btn.addEventListener("click",()=>setCategory(c.id));
+    nav.appendChild(btn);
+  });
+}
+
 function cardHTML(p){
   const t = TIERS[p.tier];
   const thumb = p.img
@@ -637,6 +744,7 @@ function buildChips(){
     b.textContent=label; b.dataset.val=val; b.dataset.group=group;
     b.setAttribute("aria-pressed", active?"true":"false");
     b.addEventListener("click",()=>{
+      if(group==="cat"){ setCategory(val); return; }
       state[group]=val;
       document.querySelectorAll(`.chip[data-group="${group}"]`).forEach(x=>x.setAttribute("aria-pressed","false"));
       b.setAttribute("aria-pressed","true");
@@ -660,7 +768,7 @@ document.getElementById("search").addEventListener("input",(e)=>{
 function stats(){
   const el=document.getElementById("stats");
   const core = PRODUCTS.filter(p=>p.tier==="core").length;
-  const data=[[PRODUCTS.length,"件精选产品"],[CATS.length,"个品类"],[core,"件必买地基"]];
+  const data=[[PRODUCTS.length,"件精选产品"],[PLANETS.length,"颗导航行星"],[core,"件必买基础"]];
   el.innerHTML = data.map(d=>`<div class="stat"><div class="n">${d[0]}</div><div class="l">${d[1]}</div></div>`).join("")
     + `<div class="stat" id="progStat"></div>`;
   updateProgress();
@@ -684,6 +792,7 @@ ubt.addEventListener("click",()=>{
 
 async function startBeautyPage(){
   await loadBoughtFromSupabase();
+  buildSolar();
   buildChips();
   stats();
   render();

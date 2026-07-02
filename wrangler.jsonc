@@ -1,0 +1,7 @@
+{
+  "name": "beauty-site",
+  "main": "worker.js",
+  "compatibility_date": "2026-07-02",
+  "workers_dev": false,
+  "preview_urls": false
+}

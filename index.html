@@ -189,15 +189,19 @@
   .product-orbit.show{opacity:1;}
   .floating-product{
     --a:0deg;--r:1;
-    position:absolute;left:50%;top:50%;width:88px;min-height:112px;padding:8px;border:0;border-radius:12px;
+    position:absolute;left:50%;top:50%;width:82px;min-height:104px;padding:7px;border:0;border-radius:12px;
     background:rgba(255,248,253,.82);box-shadow:0 16px 34px rgba(23,20,56,.24);backdrop-filter:blur(14px);
     color:#463D62;pointer-events:auto;cursor:pointer;
-    transform:translate(-50%,-50%) rotate(var(--a)) translateX(calc(130px * var(--r))) rotate(calc(-1 * var(--a)));
+    transform:translate(-50%,-50%) rotate(var(--a)) translateX(calc(126px * var(--r))) rotate(calc(-1 * var(--a)));
     transition:transform .25s ease,box-shadow .25s ease;
   }
-  .floating-product:hover{box-shadow:0 20px 44px rgba(23,20,56,.32);transform:translate(-50%,-50%) rotate(var(--a)) translateX(calc(130px * var(--r))) rotate(calc(-1 * var(--a))) translateY(-5px);}
-  .floating-product img{width:100%;height:70px;object-fit:contain;border-radius:8px;background:#fff;}
+  .floating-product:hover{box-shadow:0 20px 44px rgba(23,20,56,.32);transform:translate(-50%,-50%) rotate(var(--a)) translateX(calc(126px * var(--r))) rotate(calc(-1 * var(--a))) translateY(-5px);}
+  .floating-product img{width:100%;height:62px;object-fit:contain;border-radius:8px;background:#fff;}
   .floating-product b{display:block;margin-top:7px;font-size:11px;line-height:1.25;font-weight:500;}
+  .floating-product.more-product{
+    min-height:82px;display:grid;place-items:center;background:rgba(255,255,255,.72);
+    font-family:"Noto Serif SC",serif;font-size:15px;line-height:1.35;
+  }
   @keyframes float{0%,100%{margin-top:0}50%{margin-top:-10px}}
   .stats{display:flex;gap:30px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.18);padding-top:18px;}
   .stat .n{font-family:"Noto Serif SC",serif;font-size:30px;font-weight:600;line-height:1;}
@@ -789,17 +793,33 @@ function positionProductOrbit(anchor){
 function showFloatingProducts(cat, anchor){
   const orbit = document.getElementById("productOrbit");
   if(cat==="all"){ clearFloatingProducts(); return; }
-  const items = PRODUCTS.filter(p=>p.cat===cat && p.img).slice(0,8);
+  const categoryItems = PRODUCTS.filter(p=>p.cat===cat);
+  const items = categoryItems.filter(p=>p.img).slice(0,5);
   positionProductOrbit(anchor);
-  orbit.innerHTML = items.map((p,i)=>{
-    const angle = Math.round(360 / items.length * i - 90);
-    const radius = i % 2 ? .86 : 1;
+  const angles = productArcAngles(anchor).slice(0,items.length);
+  const cards = items.map((p,i)=>{
+    const angle = angles[i];
+    const radius = i % 2 ? .9 : 1;
     return `<button class="floating-product" type="button" style="--a:${angle}deg;--r:${radius}" data-key="${keyOf(p)}">
       <img src="${p.img}" alt="${p.brand} ${p.name}" onerror="this.closest('button').remove()">
       <b>${p.name}</b>
     </button>`;
-  }).join("");
-  orbit.classList.toggle("show", items.length>0);
+  });
+  if(categoryItems.length>items.length){
+    cards.push(`<button class="floating-product more-product" type="button" style="--a:${productArcAngles(anchor)[5]}deg;--r:.84" data-action="all">查看<br>全部</button>`);
+  }
+  orbit.innerHTML = cards.join("");
+  orbit.classList.toggle("show", cards.length>0);
+}
+
+function productArcAngles(anchor){
+  const stage = document.getElementById("solarNav").getBoundingClientRect();
+  const orb = anchor?.querySelector(".planet-orb")?.getBoundingClientRect();
+  if(!orb) return [-70,-35,0,35,70,105];
+  const x = (orb.left + orb.width / 2 - stage.left) / stage.width;
+  const y = (orb.top + orb.height / 2 - stage.top) / stage.height;
+  if(y > .62 && x > .34 && x < .76) return [-170,-135,-100,-65,-30,5];
+  return x > .55 ? [110,145,180,215,250,285] : [-70,-35,0,35,70,105];
 }
 
 function buildSolar(){
@@ -828,6 +848,10 @@ function buildSolar(){
   document.getElementById("productOrbit").addEventListener("click",e=>{
     const btn = e.target.closest(".floating-product");
     if(!btn) return;
+    if(btn.dataset.action==="all"){
+      document.getElementById("sections").scrollIntoView({behavior:"smooth", block:"start"});
+      return;
+    }
     const target = [...document.querySelectorAll(".card")].find(card=>card.dataset.key===btn.dataset.key);
     target?.scrollIntoView({behavior:"smooth", block:"center"});
   });
